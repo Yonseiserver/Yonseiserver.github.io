@@ -4,20 +4,20 @@ const ninja = document.querySelector('ninja-keys');
 // add the home and posts menu items
 ninja.data = [{
     id: "nav-about",
-    title: "about",
+    title: "About",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-blog",
-          title: "blog",
+  },{id: "nav-docs",
+          title: "Docs",
           description: "",
           section: "Navigation",
           handler: () => {
             window.location.href = "/blog/";
           },
-        },{id: "nav-slurmjob",
-          title: "slurmjob",
+        },{id: "nav-slurm-job-configurator",
+          title: "Slurm job configurator",
           description: "",
           section: "Navigation",
           handler: () => {
