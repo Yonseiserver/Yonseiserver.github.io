@@ -84,6 +84,8 @@ openpanel_analytics: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX
 google_site_verification: # your google-site-verification ID (Google Search Console)
 bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 
+
+
 # -----------------------------------------------------------------------------
 # Blog
 # -----------------------------------------------------------------------------
@@ -147,11 +149,9 @@ newsletter:
 collections:
   books:
     output: true
-  news:
-    defaults:
-      layout: post
+  publications:
     output: true
-  projects:
+  news:
     output: true
 
 # -----------------------------------------------------------------------------
