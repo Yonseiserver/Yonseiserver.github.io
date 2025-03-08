@@ -1,160 +1,157 @@
-<p style="font-size:24px;"> <br> Select Job Options </p>
-<label><input type="checkbox" name="jobselect" value="conda"> Conda activate </label>
-<label><input type="checkbox" name="jobselect" value="gpu"> Using GPU </label>
-<br>
-<br>
+---
+layout: default
+title: Slurm Job Template
+---
 
 <form name="config" id="config">
-    <table>
-        <tr>
-            <td>JOBNAME: </td>
-            <td><input type="text" name="job_name" size="12" value="testname"> </td>
-        </tr>
-        <tr>
-            <td>CPU: </td>
-            <td><input type="text" name="ntask" size="12" value="1"> </td>
-        </tr>
-        <tr>
-            <td>MEMORY: </td>
-            <td><input type="text" name="mem" size="12" value="1gb"> </td>
-        </tr>
-        <tr>
-            <td>TIME: </td>
-            <td><input type="text" name="job_time" size="12" value="00:01:00"> </td>
-        </tr>
-        <tr>
-            <td>USERNAME: </td>
-            <td><input type="text" name="id" size="12" value="username"></td>
-        </tr>
-        <tr>
-            <td>ENVNAME: </td>
-            <td><input type="text" name="envname" size="12" value="envname"></td>
-        </tr>
-
-        <tr>
-            <td>Script: </td>
-            <td><textarea name="script" rows="5" cols="40"
-                    placeholder="python /mnt/nas/users/$(whoami)/main.py"></textarea>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input type="button" value="Print & Copy">
-                <input type="button" value="Reset">
-            </td>
-
-        </tr>
-
-    </table>
-    <br>
-    <br>
-    <pre>
-        <div id="result">
-        </div>
-    </pre>
+  <p style="font-size:24px;"><br> Select Job Options </p>
+  <label>
+    <input type="checkbox" name="jobselect" value="conda"> Conda activate
+  </label>
+  <label>
+    <input type="checkbox" name="jobselect" value="gpu"> Using GPU
+  </label>
+  <br><br>
+  <table>
+    <tr>
+      <td>JOBNAME: </td>
+      <td><input type="text" name="job_name" size="12" value="testname"></td>
+    </tr>
+    <tr>
+      <td>CPU: </td>
+      <td><input type="text" name="ntask" size="12" value="1"></td>
+    </tr>
+    <tr>
+      <td>MEMORY: </td>
+      <td><input type="text" name="mem" size="12" value="1gb"></td>
+    </tr>
+    <tr>
+      <td>TIME: </td>
+      <td><input type="text" name="job_time" size="12" value="00:01:00"></td>
+    </tr>
+    <tr>
+      <td>USERNAME: </td>
+      <td><input type="text" name="id" size="12" value="username"></td>
+    </tr>
+    <tr>
+      <td>ENVNAME: </td>
+      <td><input type="text" name="envname" size="12" value="envname"></td>
+    </tr>
+    <tr>
+      <td>Script: </td>
+      <td>
+        <textarea name="script" rows="5" cols="40" placeholder="python /mnt/nas/users/$(whoami)/main.py"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input id="printCopyButton" type="button" value="Print & Copy">
+        <input id="resetButton" type="button" value="Reset">
+      </td>
+    </tr>
+  </table>
+  <br><br>
+  <pre id="result"></pre>
 </form>
 
+{% raw %}
 <script>
-    function printinfo() {
-        console.log("printinfo function called!"); // Add this line for debugging
-        var check_job;
-        if (document.forms['config'].jobselect[0].checked == true && document.forms['config'].jobselect[1].checked == false) {
-            check_job = document.forms['config'].jobselect[0].value;
-        } else if (document.forms['config'].jobselect[0].checked == false && document.forms['config'].jobselect[1].checked == true) {
-            check_job = document.forms['config'].jobselect[1].value;
-        } else if (document.forms['config'].jobselect[0].checked == true && document.forms['config'].jobselect[1].checked == true) {
-            check_job = "both";
-        } else {
-            check_job = "none";
-        }
+  function printinfo() {
+    console.log("printinfo function called!");
 
-        // Generate the script as plain text (NO <br> tags!)
-        var conda_script = "CONDA_BIN_PATH=/opt/miniconda/bin\n" +
-                            "ENV_NAME=" + document.forms['config'].envname.value + "\n" +
-                            "ENV_PATH=/mnt/nas/users/$(whoami)/.conda/envs/$ENV_NAME\n" +
-                            "source $CONDA_BIN_PATH/activate $ENV_PATH";
-
-        var job_script = "#!/bin/bash\n" +
-                            "#\n" +
-                            "#SBATCH --job-name=" + document.forms['config'].job_name.value + "\n" +
-                            "#SBATCH --partition=all\n" +
-                            "#SBATCH --account=" + document.forms['config'].id.value + "\n" +
-                            "#SBATCH --mem=" + document.forms['config'].mem.value + "\n" +
-                            "#SBATCH --ntasks=1\n" +
-                            "#SBATCH --cpus-per-task=" + document.forms['config'].ntask.value + "\n" +
-                            "#SBATCH --time=" + document.forms['config'].job_time.value + "\n" +
-                            "#SBATCH --output=/mnt/nas/users/" + document.forms['config'].id.value + "/" + document.forms['config'].job_name.value + ".log\n" +
-                            "#SBATCH --error=/mnt/nas/users/" + document.forms['config'].id.value + "/" + document.forms['config'].job_name.value + ".err\n";
-
-        var gpu_script = "#SBATCH --gres=gpu:1\n" + "#SBATCH --nodelist=gpu-compute";
-
-        var script_content = document.forms['config'].script.value;
-
-        var printme;
-
-        if (check_job == "conda") {
-            printme =  job_script +
-                            "#SBATCH --nodelist=cpu-compute\n" +
-                            "\n" +
-                            conda_script + "\n" +
-                            "\n" + script_content;
-        }
-        else if (check_job == "gpu") {
-            printme = job_script +
-                            gpu_script + "\n" +
-                            "\n" + script_content;
-        }
-        else if (check_job == "both") {
-            printme = job_script +
-                            gpu_script + "\n" +
-                            "\n" + conda_script + "\n" +
-                            "\n" + script_content;
-        }
-        else if (check_job == "none") {
-            printme = job_script +
-                            "#SBATCH --nodelist=cpu-compute\n" +
-                            "\n" + script_content;
-        }
-
-
-        // Update the #result div with <br> tags for display purposes.
-        document.querySelector("#result").innerHTML = printme.replace(/\n/g, '<br>');
-
-        // Copy to clipboard using the Clipboard API
-        navigator.clipboard.writeText(printme)
-            .then(() => {
-                console.log("Script copied to clipboard!"); // Success message
-            })
-            .catch(err => {
-                console.error('Failed to copy script: ', err); // Error handling
-            });
+    var check_job;
+    if (document.forms['config'].jobselect[0].checked === true && document.forms['config'].jobselect[1].checked === false) {
+      check_job = document.forms['config'].jobselect[0].value;
+    } else if (document.forms['config'].jobselect[0].checked === false && document.forms['config'].jobselect[1].checked === true) {
+      check_job = document.forms['config'].jobselect[1].value;
+    } else if (document.forms['config'].jobselect[0].checked === true && document.forms['config'].jobselect[1].checked === true) {
+      check_job = "both";
+    } else {
+      check_job = "none";
     }
 
+    var conda_script = "# Set up conda environment\n" +
+                       "CONDA_BIN_PATH=/opt/miniconda/bin\n" +
+                       "ENV_NAME=" + document.forms['config'].envname.value + "\n" +
+                       "ENV_PATH=/mnt/nas/users/$(whoami)/.conda/envs/$ENV_NAME\n" +
+                       "source $CONDA_BIN_PATH/activate $ENV_PATH";
 
-    function resetinfo() {
-       document.getElementById("config").reset();
+    var job_script = "#!/bin/bash\n" +
+                     "#\n" +
+                     "#SBATCH --job-name=" + document.forms['config'].job_name.value + "\n" +
+                     "#SBATCH --partition=all\n" +
+                     "#SBATCH --account=" + document.forms['config'].id.value + "\n" +
+                     "#SBATCH --mem=" + document.forms['config'].mem.value + "\n" +
+                     "#SBATCH --ntasks=1\n" +
+                     "#SBATCH --cpus-per-task=" + document.forms['config'].ntask.value + "\n" +
+                     "#SBATCH --time=" + document.forms['config'].job_time.value + "\n" +
+                     "#SBATCH --output=/mnt/nas/users/" + document.forms['config'].id.value + "/" + document.forms['config'].job_name.value + ".log\n" +
+                     "#SBATCH --error=/mnt/nas/users/" + document.forms['config'].id.value + "/" + document.forms['config'].job_name.value + ".err\n";
 
-        var printme = "#!/bin/bash\n" +
-                        "#\n" +
-                        "#SBATCH --job-name=\n" +
-                        "#SBATCH --partition=all\n" +
-                        "#SBATCH --account=\n" +
-                        "#SBATCH --mem=\n" +
-                        "#SBATCH --ntasks=1\n" +
-                        "#SBATCH --cpus-per-task=\n" +
-                        "#SBATCH --time=\n" +
-                        "#SBATCH --output=/mnt/nas/users//.log\n" +
-                        "#SBATCH --error=/mnt/nas/users//.err\n" +
-                        "#SBATCH --nodelist=cpu-compute\n" +
-                        "\n" +
-                        "python /mnt/nas/users/$(whoami)/main.py";
+    var gpu_script = "#SBATCH --gres=gpu:1\n" +
+                     "#SBATCH --nodelist=gpu-compute";
 
-        document.querySelector("#result").innerHTML = printme.replace(/\n/g, '<br>');
+    var script_content = document.forms['config'].script.value;
 
+    var printme;
+    if (check_job === "conda") {
+      printme = job_script +
+                "#SBATCH --nodelist=cpu-compute\n" +
+                "\n" +
+                conda_script + "\n" +
+                "\n" + script_content;
+    } else if (check_job === "gpu") {
+      printme = job_script +
+                gpu_script + "\n" +
+                "\n" + script_content;
+    } else if (check_job === "both") {
+      printme = job_script +
+                gpu_script + "\n" +
+                "\n" + conda_script + "\n" +
+                "\n" + script_content;
+    } else if (check_job === "none") {
+      printme = job_script +
+                "#SBATCH --nodelist=cpu-compute\n" +
+                "\n" + script_content;
     }
-    document.addEventListener('DOMContentLoaded', function() {
-        resetinfo(); // Call resetinfo() on page load
-        document.querySelector("input[value='Print & Copy']").addEventListener('click', printinfo);
-        document.querySelector("input[value='Reset']").addEventListener('click', resetinfo);
-    });
+
+    document.getElementById("result").textContent = printme;
+
+    navigator.clipboard.writeText(printme)
+      .then(() => {
+          console.log("Script copied to clipboard!");
+          alert("Script copied to clipboard!");  // 복사 성공 시 경고창 표시
+      })
+      .catch(err => {
+          console.error('Failed to copy script: ', err);
+      });
+  }
+
+  function resetinfo() {
+    document.getElementById("config").reset();
+
+    var printme = "#!/bin/bash\n" +
+                  "#\n" +
+                  "#SBATCH --job-name=\n" +
+                  "#SBATCH --partition=all\n" +
+                  "#SBATCH --account=\n" +
+                  "#SBATCH --mem=\n" +
+                  "#SBATCH --ntasks=1\n" +
+                  "#SBATCH --cpus-per-task=\n" +
+                  "#SBATCH --time=\n" +
+                  "#SBATCH --output=/mnt/nas/users//.log\n" +
+                  "#SBATCH --error=/mnt/nas/users//.err\n" +
+                  "#SBATCH --nodelist=cpu-compute\n" +
+                  "\n" +
+                  "python /mnt/nas/users/$(whoami)/main.py";
+
+    document.getElementById("result").textContent = printme;
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    resetinfo();
+    document.getElementById("printCopyButton").addEventListener('click', printinfo);
+    document.getElementById("resetButton").addEventListener('click', resetinfo);
+  });
 </script>
+{% endraw %}
