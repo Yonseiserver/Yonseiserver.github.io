@@ -156,21 +156,22 @@
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var resultElem = document.getElementById("result");
-    if (!resultElem) {
-      console.error("Result element not found on DOMContentLoaded!");
-    }
-    var printCopyButton = document.getElementById("printCopyButton");
-    var resetButton = document.getElementById("resetButton");
-    if (printCopyButton && resetButton) {
-      printCopyButton.addEventListener('click', printinfo);
-      resetButton.addEventListener('click', resetinfo);
-    } else {
-      console.error("Print or Reset buttons not found!");
-    }
-    // 초기화 호출
-    resetinfo();
-  });
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() { // setTimeout으로 감싸기
+            var resultElem = document.getElementById("result");
+            if (!resultElem) {
+                console.error("Result element not found on DOMContentLoaded!");
+            }
+            var printCopyButton = document.getElementById("printCopyButton");
+            var resetButton = document.getElementById("resetButton");
+            if (printCopyButton && resetButton) {
+                printCopyButton.addEventListener('click', printinfo);
+                resetButton.addEventListener('click', resetinfo);
+            } else {
+                console.error("Print or Reset buttons not found!");
+            }
+            resetinfo();
+        }, 0); // 0ms 지연
+    });
 </script>
 {% endraw %}
