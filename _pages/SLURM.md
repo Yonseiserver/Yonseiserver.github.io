@@ -1,6 +1,6 @@
 ---
 layout: page
-title: slurmjob
+title: Slurm job configurator
 permalink: /slurm-job/
 nav: true
 nav_order: 4

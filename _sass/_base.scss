@@ -56,6 +56,19 @@ table.table a {
   }
 }
 
+.title-and-image {
+  display: flex;        // Flexbox 레이아웃 사용
+  align-items: center;  // 수직 중앙 정렬 (선택 사항)
+  flex-wrap: nowrap;    // 줄바꿈 방지 (한 줄에 표시)
+}
+
+.title-image {
+  height: 5.5em;      // h1의 line-height와 맞춤. h1의 line-height, font-size를 확인하고, 적절한 em값으로 변경
+  width: auto;        // 이미지 비율에 맞춰 너비는 자동
+  margin-left: 1.5em;  // h1과의 간격
+  margin-bottom: 1.5em;
+}
+
 blockquote {
   background: var(--global-bg-color);
   border-left: 5px solid var(--global-theme-color);
@@ -577,6 +590,13 @@ footer.sticky-bottom {
     }
   }
 }
+
+// Make title bold
+// h1.post-title {
+//   font-weight: bold;
+// }
+
+
 
 .post-title {
   mjx-container[jax="CHTML"][display="true"] {

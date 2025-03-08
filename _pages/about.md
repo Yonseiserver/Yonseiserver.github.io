@@ -1,8 +1,8 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
-# subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+# subtitle: 연세대학교 통계데이터사이언스학과 HPC
 
 profile:
   align: right
@@ -11,9 +11,9 @@ profile:
   more_info: >
     <p>연세대학교 통계데이터사이언스학과</p>
     <p>
-      <a href="mailto:your.email@example.com">
+      <a href="mailto:musagh08@yonsei.ac.kr">
         <i class="fas fa-envelope"></i>  <!-- Font Awesome 아이콘 -->
-        your.email@example.com  <!-- 실제 이메일 주소로 변경 -->
+        Contact  <!-- 실제 이메일 주소로 변경 -->
       </a>
     </p>
 
@@ -29,5 +29,6 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-**Yonsei stat introduction**
-학과 서버 소개
+연세대학교 통계데이터사이언스학과 학생을 위한 고성능 컴퓨팅 (High Performance Computing; HPC) 클러스터 서버입니다.
+
+[신규계정 신청](https://forms.gle/M7bJVQfczEmqePpP6) 

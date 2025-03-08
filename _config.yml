@@ -2,7 +2,7 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Yonseistat # the website title (if blank, full name will be used instead)
+title: Chilli Pepper # the website title (if blank, full name will be used instead)
 first_name: Yonseistat
 middle_name:
 last_name: 
@@ -56,7 +56,7 @@ socials_in_search: true
 bib_search: false
 
 # Dimensions
-max_width: 930px
+max_width: 1200px
 
 # TODO: add layout settings (single page vs. multi-page)
 
@@ -90,7 +90,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # Blog
 # -----------------------------------------------------------------------------
 
-blog_name: Yonseistat # blog_name will be displayed in your blog page
+blog_name: Chilli Pepper # blog_name will be displayed in your blog page
 blog_description: 연세대학교 통계데이터사이언스학과 HPC cluster
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
