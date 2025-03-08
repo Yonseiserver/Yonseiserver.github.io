@@ -1,8 +1,3 @@
----
-layout: default
-title: Slurm Job Template
----
-
 <form name="config" id="config">
   <p style="font-size:24px;"><br> Select Job Options </p>
   <label>
@@ -60,6 +55,7 @@ title: Slurm Job Template
     console.log("printinfo function called!");
 
     var check_job;
+    // form 내부에 있는 체크박스 배열 접근
     if (document.forms['config'].jobselect[0].checked === true && document.forms['config'].jobselect[1].checked === false) {
       check_job = document.forms['config'].jobselect[0].value;
     } else if (document.forms['config'].jobselect[0].checked === false && document.forms['config'].jobselect[1].checked === true) {
@@ -115,12 +111,13 @@ title: Slurm Job Template
                 "\n" + script_content;
     }
 
+    // 결과 영역에 기존 내용을 덮어씌움
     document.getElementById("result").textContent = printme;
 
     navigator.clipboard.writeText(printme)
       .then(() => {
           console.log("Script copied to clipboard!");
-          alert("Script copied to clipboard!");  // 복사 성공 시 경고창 표시
+          alert("Script copied to clipboard!");
       })
       .catch(err => {
           console.error('Failed to copy script: ', err);
@@ -149,9 +146,13 @@ title: Slurm Job Template
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    resetinfo();
-    document.getElementById("printCopyButton").addEventListener('click', printinfo);
-    document.getElementById("resetButton").addEventListener('click', resetinfo);
+    // 이벤트 리스너 중복 등록 방지
+    if (!window.listenersBound) {
+      resetinfo();
+      document.getElementById("printCopyButton").addEventListener('click', printinfo);
+      document.getElementById("resetButton").addEventListener('click', resetinfo);
+      window.listenersBound = true;
+    }
   });
 </script>
 {% endraw %}
