@@ -159,17 +159,6 @@ ninja.data = [{
           window.location.href = "/blog/2023/tikzjax/";
         
       },
-    },{id: "post-a-post-with-bibliography",
-      
-        title: "a post with bibliography",
-      
-      description: "an example of a blog post with bibliography",
-      section: "Posts",
-      handler: () => {
-        
-          window.location.href = "/blog/2023/post-bibliography/";
-        
-      },
     },{id: "post-a-post-with-jupyter-notebook",
       
         title: "a post with jupyter notebook",
@@ -368,12 +357,7 @@ ninja.data = [{
           window.location.href = "/blog/2015/formatting-and-links/";
         
       },
-    },{id: "books-the-godfather",
-          title: 'The Godfather',
-          description: "",
-          section: "Books",handler: () => {
-              window.location.href = "/books/the_godfather/";
-            },},{id: "news-new-website-open-sparkles-smile",
+    },{id: "news-new-website-open-sparkles-smile",
           title: 'New website Open! :sparkles: :smile:',
           description: "",
           section: "News",},{id: "news-a-long-announcement-with-details",
