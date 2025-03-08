@@ -6,12 +6,16 @@ permalink: /
 
 profile:
   align: right
-  image: prof_pic.jpg
-  image_circular: false # crops the image to make it circular
+  image: yonsei.jpg
+  image_circular: true
   more_info: >
-    <p>444 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>연세대학교 통계데이터사이언스학과</p>
+    <p>
+      <a href="mailto:your.email@example.com">
+        <i class="fas fa-envelope"></i>  <!-- Font Awesome 아이콘 -->
+        your.email@example.com  <!-- 실제 이메일 주소로 변경 -->
+      </a>
+    </p>
 
 
 announcements:
@@ -25,5 +29,5 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Yonsei stat introduction
+**Yonsei stat introduction**
 학과 서버 소개
