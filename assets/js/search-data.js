@@ -3,13 +3,20 @@ const ninja = document.querySelector('ninja-keys');
 
 // add the home and posts menu items
 ninja.data = [{
-    id: "nav-about",
-    title: "About",
+    id: "nav-yonsei-hpc-cluster",
+    title: "Yonsei HPC Cluster",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
     },
-  },{id: "nav-docs",
+  },{id: "nav-notice",
+          title: "Notice",
+          description: "",
+          section: "Navigation",
+          handler: () => {
+            window.location.href = "/news/";
+          },
+        },{id: "nav-docs",
           title: "Docs",
           description: "",
           section: "Navigation",
@@ -364,8 +371,8 @@ ninja.data = [{
           window.location.href = "/blog/2015/formatting-and-links/";
         
       },
-    },{id: "news-new-website-open-sparkles-smile",
-          title: 'New website Open! :sparkles: :smile:',
+    },{id: "news-we-are-excited-to-announce-the-launch-of-our-brand-new-high-performance-computing-hpc-cluster-server-this-new-server-will-provide-significantly-improved-computing-power-for-our-students-and-researchers",
+          title: 'We are excited to announce the launch of our brand new High-Performance Computing...',
           description: "",
           section: "News",},{id: "news-a-long-announcement-with-details",
           title: 'A long announcement with details',
