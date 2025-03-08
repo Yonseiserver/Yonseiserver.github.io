@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "New HPC Cluster Server Launched!"
-date: 2025-03-09 00:00:00 -0500
+date: 2025-03-08 00:00:00
 inline: true
 ---
 
