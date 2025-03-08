@@ -46,6 +46,7 @@
     </tr>
   </table>
   <br><br>
+  <!-- 이 요소가 실제 DOM에 출력되어야 함 -->
   <pre id="result"></pre>
 </form>
 
@@ -54,13 +55,14 @@
   function printinfo() {
     console.log("printinfo function called!");
 
+    var form = document.forms['config'];
+    var jobselect = form.jobselect;
     var check_job;
-    // form 내부에 있는 체크박스 배열 접근
-    if (document.forms['config'].jobselect[0].checked === true && document.forms['config'].jobselect[1].checked === false) {
-      check_job = document.forms['config'].jobselect[0].value;
-    } else if (document.forms['config'].jobselect[0].checked === false && document.forms['config'].jobselect[1].checked === true) {
-      check_job = document.forms['config'].jobselect[1].value;
-    } else if (document.forms['config'].jobselect[0].checked === true && document.forms['config'].jobselect[1].checked === true) {
+    if (jobselect[0].checked === true && jobselect[1].checked === false) {
+      check_job = jobselect[0].value;
+    } else if (jobselect[0].checked === false && jobselect[1].checked === true) {
+      check_job = jobselect[1].value;
+    } else if (jobselect[0].checked === true && jobselect[1].checked === true) {
       check_job = "both";
     } else {
       check_job = "none";
@@ -68,26 +70,26 @@
 
     var conda_script = "# Set up conda environment\n" +
                        "CONDA_BIN_PATH=/opt/miniconda/bin\n" +
-                       "ENV_NAME=" + document.forms['config'].envname.value + "\n" +
+                       "ENV_NAME=" + form.envname.value + "\n" +
                        "ENV_PATH=/mnt/nas/users/$(whoami)/.conda/envs/$ENV_NAME\n" +
                        "source $CONDA_BIN_PATH/activate $ENV_PATH";
 
     var job_script = "#!/bin/bash\n" +
                      "#\n" +
-                     "#SBATCH --job-name=" + document.forms['config'].job_name.value + "\n" +
+                     "#SBATCH --job-name=" + form.job_name.value + "\n" +
                      "#SBATCH --partition=all\n" +
-                     "#SBATCH --account=" + document.forms['config'].id.value + "\n" +
-                     "#SBATCH --mem=" + document.forms['config'].mem.value + "\n" +
+                     "#SBATCH --account=" + form.id.value + "\n" +
+                     "#SBATCH --mem=" + form.mem.value + "\n" +
                      "#SBATCH --ntasks=1\n" +
-                     "#SBATCH --cpus-per-task=" + document.forms['config'].ntask.value + "\n" +
-                     "#SBATCH --time=" + document.forms['config'].job_time.value + "\n" +
-                     "#SBATCH --output=/mnt/nas/users/" + document.forms['config'].id.value + "/" + document.forms['config'].job_name.value + ".log\n" +
-                     "#SBATCH --error=/mnt/nas/users/" + document.forms['config'].id.value + "/" + document.forms['config'].job_name.value + ".err\n";
+                     "#SBATCH --cpus-per-task=" + form.ntask.value + "\n" +
+                     "#SBATCH --time=" + form.job_time.value + "\n" +
+                     "#SBATCH --output=/mnt/nas/users/" + form.id.value + "/" + form.job_name.value + ".log\n" +
+                     "#SBATCH --error=/mnt/nas/users/" + form.id.value + "/" + form.job_name.value + ".err\n";
 
     var gpu_script = "#SBATCH --gres=gpu:1\n" +
                      "#SBATCH --nodelist=gpu-compute";
 
-    var script_content = document.forms['config'].script.value;
+    var script_content = form.script.value;
 
     var printme;
     if (check_job === "conda") {
@@ -111,8 +113,12 @@
                 "\n" + script_content;
     }
 
-    // 결과 영역에 기존 내용을 덮어씌움
-    document.getElementById("result").textContent = printme;
+    var resultElem = document.getElementById("result");
+    if (resultElem) {
+      resultElem.textContent = printme;
+    } else {
+      console.error("Result element not found!");
+    }
 
     navigator.clipboard.writeText(printme)
       .then(() => {
@@ -125,7 +131,7 @@
   }
 
   function resetinfo() {
-    document.getElementById("config").reset();
+    document.forms['config'].reset();
 
     var printme = "#!/bin/bash\n" +
                   "#\n" +
@@ -142,21 +148,29 @@
                   "\n" +
                   "python /mnt/nas/users/$(whoami)/main.py";
 
-    document.getElementById("result").textContent = printme;
+    var resultElem = document.getElementById("result");
+    if (resultElem) {
+      resultElem.textContent = printme;
+    } else {
+      console.error("Result element not found during reset!");
+    }
   }
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // "result" 요소가 존재하는지 확인 후 초기화 실행
-        if (document.getElementById("result")) {
-            resetinfo();
-        }
-
-        // 이벤트 리스너 중복 등록 방지
-        if (!window.listenersBound) {
-            document.getElementById("printCopyButton").addEventListener('click', printinfo);
-            document.getElementById("resetButton").addEventListener('click', resetinfo);
-            window.listenersBound = true;
-        }
-    });
+  document.addEventListener('DOMContentLoaded', function() {
+    var resultElem = document.getElementById("result");
+    if (!resultElem) {
+      console.error("Result element not found on DOMContentLoaded!");
+    }
+    var printCopyButton = document.getElementById("printCopyButton");
+    var resetButton = document.getElementById("resetButton");
+    if (printCopyButton && resetButton) {
+      printCopyButton.addEventListener('click', printinfo);
+      resetButton.addEventListener('click', resetinfo);
+    } else {
+      console.error("Print or Reset buttons not found!");
+    }
+    // 초기화 호출
+    resetinfo();
+  });
 </script>
 {% endraw %}
