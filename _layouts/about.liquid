@@ -1,83 +1,83 @@
 ---
 layout: default
 ---
+
 <div class="post">
   <header class="post-header">
-  <div class="title-and-image">    
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
-      {% else %}
-        {{ site.title }}
+    <div class="container mx-auto px-4 py-16 text-center">
+      <h1 class="post-title" style="font-size: 2.5rem; font-weight: bold; color:rgb(0, 0, 0);">
+        {{ page.title | default: "Yonsei HPC Cluster" }}
+      </h1>
+      {% if page.subtitle %}
+        <p style="font-size: 1.25rem; margin-top: 0.5rem;">{{ page.subtitle }}</p>
       {% endif %}
-    </h1>
-    <img src="/assets/img/chili.png" alt="Small Image" class="title-image">
-  </div>
-    <p class="desc">{{ page.subtitle }}</p>
+    </div>
   </header>
 
   <article>
-    {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
+    <div class="container mx-auto px-4 relative">
+
+      <!-- 배경 이미지 (로고) -->
+      {% if page.profile.image %}
           {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1
-      rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-      30vw, 95vw"{% endcapture %}
-          {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
-          %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
+          <div style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; z-index: -1; opacity: 0.2;">
+              <img src="{{ profile_image_path | relative_url }}" alt="Background Image" style="width: 100%; height: 100%; object-fit: contain; object-position: center;">
+          </div>
+      {% endif %}
+
+      <!-- 설명 -->
+      <div style="text-align: center; margin-bottom: 1rem; position: relative; z-index: 1;">
+        <p>{{ page.description | replace: '\n', '<br>' }}</p>  <!-- page.description 사용 -->
       </div>
-    {% endif %}
 
-    <div class="clearfix">{{ content }}</div>
+      <!-- 이메일 -->
+        <div style="text-align: center; margin-bottom: 1rem; z-index: 1;position: relative;">
+            <p>
+              <a href="mailto:{{ page.profile.email | default: 'musagh08@yonsei.ac.kr' }}" style = "display:flex; align-items:center; justify-content: center;">
+                <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
+                Contact
+              </a>
+            </p>
+        </div>
 
-    <!-- News -->
-    {% if page.announcements and page.announcements.enabled %}
-      <h2>
-        <a href="{{ '/news/' | relative_url }}" style="color: inherit">news</a>
-      </h2>
-      {% include news.liquid limit=true %}
-    {% endif %}
-
-    <!-- Latest posts -->
-    {% if page.latest_posts and page.latest_posts.enabled %}
-      <h2>
-        <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
-      </h2>
-      {% include latest_posts.liquid %}
-    {% endif %}
-
-    <!-- Selected papers -->
-    {% if page.selected_papers %}
-      <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">selected publications</a>
-      </h2>
-      {% include selected_papers.liquid %}
-    {% endif %}
-
-    <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.contact_note }}</div>
+      <!-- 신규 계정 신청 버튼 -->
+      <div style="text-align: center; margin-top: 2rem;position: relative; z-index: 1;">
+        <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary inline-flex items-center">
+          <i class="fas fa-user-plus mr-2"></i>
+          {{ page.apply_text | default: '신규 계정 신청' }}
+        </a>
       </div>
-    {% endif %}
 
-    {% if site.newsletter and site.newsletter.enabled and site.footer_fixed %}
-      {% include newsletter.liquid center=true %}
+      <!-- Features -->
+      {% if page.features %}
+        <div style="margin-top: 3rem; position: relative; z-index: 1; overflow-x: auto;">
+          {% for item in page.features %}
+            <div style="width: 100%; border: 1px solid #dee2e6; padding: 1.5rem; border-radius: 0.25rem; display: flex; align-items: flex-start; margin-bottom: 1rem;">
+              <div class="card-content" style="display: flex; ">
+                {% if item.icon == "Server" %}
+                  <i class="fas fa-server" style="color: #007bff; font-size: 2rem; margin-right: 1rem;"></i>
+                {% elsif item.icon == "BookOpen" %}
+                  <i class="fas fa-book-open" style="color: #007bff; font-size: 2rem; margin-right: 1rem;"></i>
+                {% elsif item.icon == "Megaphone" %}
+                  <i class="fas fa-bullhorn" style="color: #007bff; font-size: 2rem; margin-right: 1rem;"></i>
+                {% endif %}
+                <div>
+                  <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 0;">{{ item.title }}</h3>
+                  <p style="color: #6c757d; font-size: 0.45rem;">{{ item.description }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    {% if page.show_footer | default: true %}
+      <div style="max-width: 800px; margin: 0 auto; padding: 2rem;">
+        <footer style="background-color: #f8f9fa; text-align: center; padding: 1rem; margin-top: 3rem; color: #6c757d;">
+          © 2025 Yonsei University. All rights reserved.
+        </footer>
+      </div>
     {% endif %}
   </article>
 </div>

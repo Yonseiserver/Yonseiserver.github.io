@@ -2,7 +2,7 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Chilli Pepper # the website title (if blank, full name will be used instead)
+title: Yonsei HPC Cluster # the website title (if blank, full name will be used instead)
 first_name: Yonseistat
 middle_name:
 last_name: 
@@ -90,7 +90,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # Blog
 # -----------------------------------------------------------------------------
 
-blog_name: Chilli Pepper # blog_name will be displayed in your blog page
+blog_name: Yonsei HPC Cluster # blog_name will be displayed in your blog page
 blog_description: 연세대학교 통계데이터사이언스학과 HPC cluster
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts

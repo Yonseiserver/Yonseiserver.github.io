@@ -1,8 +1,8 @@
 ---
 layout: post
-date: 2025-03-05 00:00:00-0400
+title: "New HPC Cluster Server Launched!"
+date: 2025-03-09 00:00:00 -0500
 inline: true
-related_posts: false
 ---
 
-New website Open! :sparkles: :smile:
+We are excited to announce the launch of our brand new High-Performance Computing (HPC) cluster server!  This new server will provide significantly improved computing power for our students and researchers.
