@@ -1,0 +1,153 @@
+// _sass/slurm-job.scss
+
+// Variables (for consistency - adjust these to match your ai-folio theme)
+$primary-color: #007bff; // Example primary color (blue)
+$secondary-color: #6c757d; // Example secondary color (gray)
+$body-bg: #fff;
+$body-font-color: #333;
+$font-family: 'Helvetica Neue', Arial, sans-serif; // Example font stack
+$input-border-color: #ced4da;
+$input-focus-border-color: lighten($primary-color, 20%);
+$input-bg: #fff;
+$input-padding: 0.5rem 0.75rem;
+$button-bg: $primary-color;
+$button-color: #fff;
+$button-padding: 0.5rem 1rem;
+$button-border-radius: 0.25rem;
+$form-label-font-weight: bold;
+$form-group-margin-bottom: 1rem;
+$table-border-color: #dee2e6;
+
+// Overall Page Structure
+.container {  // Assuming you have a container class in your layout
+    max-width: 800px; // Limit width for better readability on large screens
+    margin: 0 auto;   // Center the content
+    padding: 2rem 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: $body-font-color;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: $body-font-color;
+}
+p[style] {
+  font-size: 1.5rem !important;
+}
+
+// Form Styling
+form {
+    margin: 0; // Reset default margin
+    display: block; // Take up full width
+    //  display: inline-block; // remove this!
+
+    label { // Style for all labels within the form
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: $form-label-font-weight;
+    }
+
+    input[type="text"],
+    textarea {
+        display: block; // Make inputs full-width
+        width: 100%;    // Very important for responsiveness
+        padding: $input-padding;
+        font-size: 1rem;
+        line-height: 1.5;
+        border: 1px solid $input-border-color;
+        border-radius: 0.25rem;
+        background-color: $input-bg;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        margin-bottom: $form-group-margin-bottom;
+
+        &:focus {
+            border-color: $input-focus-border-color;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba($primary-color, 0.25); // Subtle glow
+        }
+    }
+
+    textarea {
+        resize: vertical; // Allow vertical resizing only
+    }
+
+    input[type="checkbox"] {
+        display: inline-block;
+        width: auto; // Checkboxes don't need full width
+        margin-right: 0.5rem;
+        vertical-align: middle; // Align with label text
+    }
+
+    input[type="button"] {
+        background-color: $button-bg;
+        color: $button-color;
+        padding: $button-padding;
+        border: none;
+        border-radius: $button-border-radius;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.15s ease-in-out;
+
+        &:hover {
+            background-color: darken($button-bg, 10%); // Slightly darker on hover
+        }
+    }
+}
+// Table styling
+table {
+    width: 100%;
+    margin-bottom: 2rem;
+    border-collapse: collapse;  //  Use collapse for a cleaner look
+
+    td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border-top: 1px solid $table-border-color; // Add subtle borders
+        &:first-child {
+            font-weight: $form-label-font-weight; // Make first column bold
+            width: 30%;
+        }
+    }
+}
+
+// Result Area
+pre {
+    background-color: #f8f9fa; // Light gray background
+    border: 1px solid $input-border-color;
+    padding: 1rem;
+    overflow: auto; // Add scrollbars if needed
+    border-radius: 0.25rem;
+    width: 100%;   // Make the pre full-width
+    height: auto;  // Let the height adjust automatically
+    margin-bottom: 2rem;
+}
+
+#result {
+    width: auto;
+    height: auto;
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+// Responsive Adjustments (Media Queries)
+@media (max-width: 768px) {
+    // Adjust styles for smaller screens
+    .container {
+        padding: 1rem; // Less padding on small screens
+    }
+    table td {
+      display: block; // stacks the table data on top of each other for readability
+      &:first-child{
+        width: 100%;
+      }
+    }
+}
