@@ -16,97 +16,90 @@ layout: default
 
   <article>
     <div class="container mt-5" role="main">
-
-      <!-- 배경 이미지 (로고) -->
-      {% if page.profile.image %}
-        {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-        <div style="position: absolute; top: 150px; left: 50%;  width: 300px; height: 300px; z-index: -1; opacity: 0.2;">
-          <img src="{{ profile_image_path | relative_url }}" alt="Background Image" style="width: 100%; height: 100%; object-fit: contain; object-position: center; transform: translateX(-50%)">
+      <div class="logo-container">  <!-- 추가: 이미지를 감싸는 div -->
+        <!-- 설명 -->
+        <div class="text-center margin-bottom-1rem">
+                <p class="post-description">{{ page.description }}</p>
         </div>
-      {% endif %}
 
-      <!-- 설명 -->
-      <div class="text-center margin-bottom-1rem position-relative z-index-1">
-              <p class="post-description" style = "font-size: 1.3rem !important;">{{ page.description }}</p>
-      </div>
+        <!-- Contact & 신규 계정 신청 버튼 (Flexbox Container) -->
+        <div class = "buttons-container">
+            <!-- 이메일 -->
+            <div class="text-center margin-bottom-1rem">
+                <p>
+                  <a href="mailto:{{ page.profile.email | default: 'example@yonsei.ac.kr' }}" class = "btn btn-primary contact-button">
+                    <i class="fas fa-envelope mr-2"></i>
+                    Contact
+                  </a>
+                </p>
+            </div>
 
-      <!-- Contact & 신규 계정 신청 버튼 (Flexbox Container) -->
-      <div class = "buttons-container">
-          <!-- 이메일 -->
-          <div class="text-center margin-bottom-1rem position-relative z-index-1">
-              <p>
-                <a href="mailto:{{ page.profile.email | default: 'example@yonsei.ac.kr' }}" class = "btn btn-primary contact-button">
-                  <i class="fas fa-envelope mr-2"></i>
-                  Contact
-                </a>
-              </p>
-          </div>
-
-          <!-- 신규 계정 신청 버튼 -->
-          <div class="text-center margin-top-2rem position-relative z-index-1" style = "margin-top: 0 !important;">
-            <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary apply-button">
-              <i class="fas fa-user-plus mr-2"></i>
-              신규 계정 신청
-            </a>
-          </div>
-      </div>
+            <!-- 신규 계정 신청 버튼 -->
+            <div class="text-center margin-top-2rem" style = "margin-top: 0 !important;">
+              <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary apply-button">
+                <i class="fas fa-user-plus mr-2"></i>
+                신규 계정 신청
+              </a>
+            </div>
+        </div>
 
 
-      <!-- 서버 사양 -->
-      <div class="margin-top-3rem position-relative z-index-1">
-        <h2 class = "specs-header">서버 사양</h2>
-        <table class="server-specs-table">
-          <thead class = "specs-thead">
-            <tr>
-              <th></th> <!-- 아이콘 -->
-              <th>항목</th>
-              <th>사양</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for category_data in site.data.server_specs %}
+        <!-- 서버 사양 -->
+        <div class="margin-top-3rem">
+          <h2 class = "specs-header">서버 사양</h2>
+          <table class="server-specs-table">
+            <thead class = "specs-thead">
               <tr>
-                <td class="specs-icon">
-                  {% case category_data.category %}
-                    {% when "CPU" %}
-                      <i class="fas fa-microchip"></i>
-                    {% when "RAM" %}
-                      <i class="fas fa-memory"></i>
-                    {% when "GPU" %}
-                      <i class="fas fa-server"></i>
-                    {% when "Storage" %}
-                      <i class="fas fa-hdd"></i>
-                  {% endcase %}
-                </td>
-                <td class="specs-category">{{ category_data.category }}</td>
-                <td data-label="사양" class="specs-value">{{ category_data.value }}</td>
+                <th></th> <!-- 아이콘 -->
+                <th>항목</th>
+                <th>사양</th>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-
-      <!-- 최신 공지 -->
-      <div class="margin-top-1rem position-relative z-index-1">
-        <div class="latest-news-block">
-          <div class="latest-news-header">
-            <i class="fas fa-bullhorn latest-news-icon"></i>
-            <h3 class="latest-news-title">최신 공지</h3>
-          </div>
-          <ul class="latest-news-list">
-            {% assign sorted_news = site.news | sort: 'date' | reverse %}
-            {% for news_item in sorted_news limit: page.latest_posts %}
-              <li class="latest-news-item">
-                <div class="post-list-item">
-                  <span class="post-meta">{{ news_item.date | date: "%Y-%m-%d" }}</span>
-                  <a href="{{ news_item.url | relative_url }}">{{ news_item.title }}</a>
-                </div>
-              </li>
-            {% endfor %}
-          </ul>
+            </thead>
+            <tbody>
+              {% for category_data in site.data.server_specs %}
+                <tr>
+                  <td class="specs-icon">
+                    {% case category_data.category %}
+                      {% when "CPU" %}
+                        <i class="fas fa-microchip"></i>
+                      {% when "RAM" %}
+                        <i class="fas fa-memory"></i>
+                      {% when "GPU" %}
+                        <i class="fas fa-server"></i>
+                      {% when "Storage" %}
+                        <i class="fas fa-hdd"></i>
+                    {% endcase %}
+                  </td>
+                  <td class="specs-category">{{ category_data.category }}</td>
+                  <td data-label="사양" class="specs-value">{{ category_data.value }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-      </div>
 
+        <!-- 최신 공지 -->
+        <div>
+          <div class="latest-news-block">
+            <div class="latest-news-header">
+              <i class="fas fa-bullhorn latest-news-icon"></i>
+              <h3 class="latest-news-title">최신 공지</h3>
+            </div>
+            <ul class="latest-news-list">
+              {% assign sorted_news = site.news | sort: 'date' | reverse %}
+              {% for news_item in sorted_news limit: page.latest_posts %}
+                <li class="latest-news-item">
+                  <div class="post-list-item">
+                    <span class="post-meta">{{ news_item.date | date: "%Y-%m-%d" }}</span>
+                    <a href="{{ news_item.url | relative_url }}">{{ news_item.title }}</a>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+
+      </div> <!-- logo-container 닫는 태그 -->
     </div>
 
     {% if page.show_footer | default: true %}
@@ -118,3 +111,30 @@ layout: default
     {% endif %}
   </article>
 </div>
+
+<style>
+.logo-container {
+    position: relative;
+    min-height: 300px; /* 이미지 높이만큼 최소 높이 확보 */
+    margin-bottom: 1rem;
+}
+  .logo-container::before {
+      content: "";
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 300px;
+      z-index: -1;
+      opacity: 0.2;
+      {% if page.profile.image %}
+        {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
+        background-image: url("{{ profile_image_path | relative_url }}");
+      {% endif %}
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+  }
+
+</style>
