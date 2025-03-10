@@ -1515,10 +1515,14 @@ figure.cover {
     ::highlight(search),
     .latest-news-block .latest-news-list li .post-list-item a,
     .server-specs-table tbody td,
-    .contact-button, /* Contact 버튼 글자색 추가 */
-    .apply-button /* 신규 계정 신청 버튼 글자색 추가 */
+    .contact-button,
+    .apply-button,
+    .post-title,
+    .post-tags,
+    .desc,
+    .post-description
     {
-      color: var(--global-text-color-dark) !important; /* !important 추가 및 글자색 강제 변경 */
+      color: var(--global-text-color-dark) !important; /* !important 유지 */
     }
 
     a,
@@ -1663,7 +1667,7 @@ figure.cover {
 
 
   /* 모바일 반응형 테이블 스타일 (다크 모드) */
-  @media (max-width: 576px) and (prefers-color-scheme: dark){
+  @media (max-width: 400px) and (prefers-color-scheme: dark){
     td {
       border-bottom-color: var(--global-divider-color-dark); /* 다크 모드 셀 구분선 색 */
     }

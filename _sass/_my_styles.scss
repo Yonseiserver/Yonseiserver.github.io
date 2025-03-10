@@ -163,3 +163,17 @@
     }
 
 }
+
+:root {
+    --text-color: black; // CSS 변수 (기본값)
+  }
+  
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-color: white; // 다크 모드에서 CSS 변수 값 변경
+    }
+  }
+  
+  .my-element {
+    color: var(--text-color); // CSS 변수 사용.  if/else 필요 없음!
+  }
