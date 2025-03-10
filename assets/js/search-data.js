@@ -3,8 +3,8 @@ const ninja = document.querySelector('ninja-keys');
 
 // add the home and posts menu items
 ninja.data = [{
-    id: "nav-yonsei-hpc-cluster",
-    title: "Yonsei HPC Cluster",
+    id: "nav-yonseistat-hpc-cluster",
+    title: "Yonseistat HPC Cluster",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
@@ -16,8 +16,8 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/news/";
           },
-        },{id: "nav-docs",
-          title: "Docs",
+        },{id: "nav-manual",
+          title: "Manual",
           description: "",
           section: "Navigation",
           handler: () => {
