@@ -1,177 +1,206 @@
-<form name="config" id="config">
-  <p style="font-size:24px;"><br> Select Job Options </p>
-  <label>
-    <input type="checkbox" name="jobselect" value="conda"> Conda activate
-  </label>
-  <label>
-    <input type="checkbox" name="jobselect" value="gpu"> Using GPU
-  </label>
-  <br><br>
-  <table>
-    <tr>
-      <td>JOBNAME: </td>
-      <td><input type="text" name="job_name" size="12" value="testname"></td>
-    </tr>
-    <tr>
-      <td>CPU: </td>
-      <td><input type="text" name="ntask" size="12" value="1"></td>
-    </tr>
-    <tr>
-      <td>MEMORY: </td>
-      <td><input type="text" name="mem" size="12" value="1gb"></td>
-    </tr>
-    <tr>
-      <td>TIME: </td>
-      <td><input type="text" name="job_time" size="12" value="00:01:00"></td>
-    </tr>
-    <tr>
-      <td>USERNAME: </td>
-      <td><input type="text" name="id" size="12" value="username"></td>
-    </tr>
-    <tr>
-      <td>ENVNAME: </td>
-      <td><input type="text" name="envname" size="12" value="envname"></td>
-    </tr>
-    <tr>
-      <td>Script: </td>
-      <td>
-        <textarea name="script" rows="5" cols="40" placeholder="python /mnt/nas/users/$(whoami)/main.py"></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <input id="printCopyButton" type="button" value="Print & Copy">
-        <input id="resetButton" type="button" value="Reset">
-      </td>
-    </tr>
-  </table>
-  <br><br>
-  <!-- 이 요소가 실제 DOM에 출력되어야 함 -->
-  <pre id="result">Test</pre>
-</form>
+<div class="post">
+    <article class="post-content">
+        <form name="config" id="config">
+            <p style="font-size:24px;"><br> Select Job Options </p>
+            <label>
+                <input type="checkbox" name="jobselect" value="conda"> Conda activate
+            </label>
+            <label>
+                <input type="checkbox" name="jobselect" value="gpu"> Using GPU
+            </label>
+            <br><br>
+            <!-- 버튼들을 table 밖으로 이동하고 div로 감쌈 -->
+            <div>
+                <table>
+                    <tr>
+                        <td>JOBNAME: </td>
+                        <td><input type="text" name="job_name" size="12" value="testname"></td>
+                    </tr>
+                    <tr>
+                        <td>CPU: </td>
+                        <td><input type="text" name="ntask" size="12" value="1"></td>
+                    </tr>
+                    <tr>
+                        <td>MEMORY: </td>
+                        <td><input type="text" name="mem" size="12" value="1gb"></td>
+                    </tr>
+                    <tr>
+                        <td>TIME: </td>
+                        <td><input type="text" name="job_time" size="12" value="00:01:00"></td>
+                    </tr>
+                    <tr>
+                        <td>USERNAME: </td>
+                        <td><input type="text" name="id" size="12" value="username"></td>
+                    </tr>
+                    <tr>
+                        <td>ENVNAME: </td>
+                        <td><input type="text" name="envname" size="12" value="envname"></td>
+                    </tr>
+                    <tr>
+                        <td>Script: </td>
+                        <td>
+                            <textarea name="script" rows="5" cols="40"
+                                placeholder="python /mnt/nas/users/$(whoami)/main.py"></textarea>
+                        </td>
+                    </tr>
+                </table>
+                <!-- 버튼들을 감싸는 div 추가 -->
+                <div class="button-container">
+                    <input id="printCopyButton" type="button" value="Print & Copy">
+                    <input id="resetButton" type="button" value="Reset">
+                </div>
+            </div>
 
-{% raw %}
-<script>
-  function printinfo() {
-    console.log("printinfo function called!");
+            <br><br>
+            <!-- 이 요소가 실제 DOM에 출력되어야 함 -->
+            <pre id="result">Test</pre>
+        </form>
 
-    var form = document.forms['config'];
-    var jobselect = form.jobselect;
-    var check_job;
-    if (jobselect[0].checked === true && jobselect[1].checked === false) {
-      check_job = jobselect[0].value;
-    } else if (jobselect[0].checked === false && jobselect[1].checked === true) {
-      check_job = jobselect[1].value;
-    } else if (jobselect[0].checked === true && jobselect[1].checked === true) {
-      check_job = "both";
-    } else {
-      check_job = "none";
-    }
+        {% raw %}
+        <script>
+            function printinfo() {
+                console.log("printinfo function called!");
 
-    var conda_script = "# Set up conda environment\n" +
-                       "CONDA_BIN_PATH=/opt/miniconda/bin\n" +
-                       "ENV_NAME=" + form.envname.value + "\n" +
-                       "ENV_PATH=/mnt/nas/users/$(whoami)/.conda/envs/$ENV_NAME\n" +
-                       "source $CONDA_BIN_PATH/activate $ENV_PATH";
+                var form = document.forms['config'];
+                var jobselect = form.jobselect;
+                var check_job;
+                if (jobselect[0].checked === true && jobselect[1].checked === false) {
+                    check_job = jobselect[0].value;
+                } else if (jobselect[0].checked === false && jobselect[1].checked === true) {
+                    check_job = jobselect[1].value;
+                } else if (jobselect[0].checked === true && jobselect[1].checked === true) {
+                    check_job = "both";
+                } else {
+                    check_job = "none";
+                }
 
-    var job_script = "#!/bin/bash\n" +
-                     "#\n" +
-                     "#SBATCH --job-name=" + form.job_name.value + "\n" +
-                     "#SBATCH --partition=all\n" +
-                     "#SBATCH --account=" + form.id.value + "\n" +
-                     "#SBATCH --mem=" + form.mem.value + "\n" +
-                     "#SBATCH --ntasks=1\n" +
-                     "#SBATCH --cpus-per-task=" + form.ntask.value + "\n" +
-                     "#SBATCH --time=" + form.job_time.value + "\n" +
-                     "#SBATCH --output=/mnt/nas/users/" + form.id.value + "/" + form.job_name.value + ".log\n" +
-                     "#SBATCH --error=/mnt/nas/users/" + form.id.value + "/" + form.job_name.value + ".err\n";
+                var conda_script = "# Set up conda environment\n" +
+                    "CONDA_BIN_PATH=/opt/miniconda/bin\n" +
+                    "ENV_NAME=" + form.envname.value + "\n" +
+                    "ENV_PATH=/mnt/nas/users/$(whoami)/.conda/envs/$ENV_NAME\n" +
+                    "source $CONDA_BIN_PATH/activate $ENV_PATH";
 
-    var gpu_script = "#SBATCH --gres=gpu:1\n" +
-                     "#SBATCH --nodelist=gpu-compute";
+                var job_script = "#!/bin/bash\n" +
+                    "#\n" +
+                    "#SBATCH --job-name=" + form.job_name.value + "\n" +
+                    "#SBATCH --partition=all\n" +
+                    "#SBATCH --account=" + form.id.value + "\n" +
+                    "#SBATCH --mem=" + form.mem.value + "\n" +
+                    "#SBATCH --ntasks=1\n" +
+                    "#SBATCH --cpus-per-task=" + form.ntask.value + "\n" +
+                    "#SBATCH --time=" + form.job_time.value + "\n" +
+                    "#SBATCH --output=/mnt/nas/users/" + form.id.value + "/" + form.job_name.value + ".log\n" +
+                    "#SBATCH --error=/mnt/nas/users/" + form.id.value + "/" + form.job_name.value + ".err\n";
 
-    var script_content = form.script.value;
+                var gpu_script = "#SBATCH --gres=gpu:1\n" +
+                    "#SBATCH --nodelist=gpu-compute";
 
-    var printme;
-    if (check_job === "conda") {
-      printme = job_script +
-                "#SBATCH --nodelist=cpu-compute\n" +
-                "\n" +
-                conda_script + "\n" +
-                "\n" + script_content;
-    } else if (check_job === "gpu") {
-      printme = job_script +
-                gpu_script + "\n" +
-                "\n" + script_content;
-    } else if (check_job === "both") {
-      printme = job_script +
-                gpu_script + "\n" +
-                "\n" + conda_script + "\n" +
-                "\n" + script_content;
-    } else if (check_job === "none") {
-      printme = job_script +
-                "#SBATCH --nodelist=cpu-compute\n" +
-                "\n" + script_content;
-    }
+                var script_content = form.script.value;
 
-    var resultElem = document.getElementById("result");
-    if (resultElem) {
-      resultElem.textContent = printme;
-    } else {
-      console.error("Result element not found!");
-    }
+                var printme;
+                if (check_job === "conda") {
+                    printme = job_script +
+                        "#SBATCH --nodelist=cpu-compute\n" +
+                        "\n" +
+                        conda_script + "\n" +
+                        "\n" + script_content;
+                } else if (check_job === "gpu") {
+                    printme = job_script +
+                        gpu_script + "\n" +
+                        "\n" + script_content;
+                } else if (check_job === "both") {
+                    printme = job_script +
+                        gpu_script + "\n" +
+                        "\n" + conda_script + "\n" +
+                        "\n" + script_content;
+                } else if (check_job === "none") {
+                    printme = job_script +
+                        "#SBATCH --nodelist=cpu-compute\n" +
+                        "\n" + script_content;
+                }
 
-    navigator.clipboard.writeText(printme)
-      .then(() => {
-          console.log("Script copied to clipboard!");
-          alert("Script copied to clipboard!");
-      })
-      .catch(err => {
-          console.error('Failed to copy script: ', err);
-      });
-  }
+                var resultElem = document.getElementById("result");
+                if (resultElem) {
+                    resultElem.textContent = printme;
+                } else {
+                    console.error("Result element not found!");
+                }
 
-  function resetinfo() {
-    document.forms['config'].reset();
-
-    var printme = "#!/bin/bash\n" +
-                  "#\n" +
-                  "#SBATCH --job-name=\n" +
-                  "#SBATCH --partition=all\n" +
-                  "#SBATCH --account=\n" +
-                  "#SBATCH --mem=\n" +
-                  "#SBATCH --ntasks=1\n" +
-                  "#SBATCH --cpus-per-task=\n" +
-                  "#SBATCH --time=\n" +
-                  "#SBATCH --output=/mnt/nas/users//.log\n" +
-                  "#SBATCH --error=/mnt/nas/users//.err\n" +
-                  "#SBATCH --nodelist=cpu-compute\n" +
-                  "\n" +
-                  "python /mnt/nas/users/$(whoami)/main.py";
-
-    var resultElem = document.getElementById("result");
-    if (resultElem) {
-      resultElem.textContent = printme;
-    } else {
-      console.error("Result element not found during reset!");
-    }
-  }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() { // setTimeout으로 감싸기
-            var resultElem = document.getElementById("result");
-            if (!resultElem) {
-                console.error("Result element not found on DOMContentLoaded!");
+                navigator.clipboard.writeText(printme)
+                    .then(() => {
+                        console.log("Script copied to clipboard!");
+                        alert("Script copied to clipboard!");
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy script: ', err);
+                    });
             }
-            var printCopyButton = document.getElementById("printCopyButton");
-            var resetButton = document.getElementById("resetButton");
-            if (printCopyButton && resetButton) {
-                printCopyButton.addEventListener('click', printinfo);
-                resetButton.addEventListener('click', resetinfo);
-            } else {
-                console.error("Print or Reset buttons not found!");
+
+            function resetinfo() {
+                document.forms['config'].reset();
+
+                var printme = "#!/bin/bash\n" +
+                    "#\n" +
+                    "#SBATCH --job-name=\n" +
+                    "#SBATCH --partition=all\n" +
+                    "#SBATCH --account=\n" +
+                    "#SBATCH --mem=\n" +
+                    "#SBATCH --ntasks=1\n" +
+                    "#SBATCH --cpus-per-task=\n" +
+                    "#SBATCH --time=\n" +
+                    "#SBATCH --output=/mnt/nas/users//.log\n" +
+                    "#SBATCH --error=/mnt/nas/users//.err\n" +
+                    "#SBATCH --nodelist=cpu-compute\n" +
+                    "\n" +
+                    "python /mnt/nas/users/$(whoami)/main.py";
+
+                var resultElem = document.getElementById("result");
+                if (resultElem) {
+                    resultElem.textContent = printme;
+                } else {
+                    console.error("Result element not found during reset!");
+                }
             }
-            resetinfo();
-        }, 100); // 0ms 지연
-    });
-</script>
-{% endraw %}
+            // setTimeout 제거, DOMContentLoaded 이벤트 핸들러 단순화
+            document.addEventListener('DOMContentLoaded', function () {
+                var printCopyButton = document.getElementById("printCopyButton");
+                var resetButton = document.getElementById("resetButton");
+
+                if (printCopyButton && resetButton) {
+                    printCopyButton.addEventListener('click', printinfo);
+                    resetButton.addEventListener('click', resetinfo);
+                } else {
+                    console.error("Print or Reset buttons not found!");
+                }
+
+                resetinfo(); // 페이지 로드 시 resetinfo() 호출
+            });
+        </script>
+        {% endraw %}
+    </article>
+</div>
+
+<style>
+/* CSS 추가: 버튼 스타일 및 미디어 쿼리 */
+.button-container {
+    text-align: center; /* 버튼 중앙 정렬 */
+    margin-top: 1rem;    /* 테이블과의 간격 */
+}
+
+#printCopyButton, #resetButton {
+  display: inline-block; /*사라지는 현상 방지*/
+  margin: 0 0.5rem;     /* 버튼 사이 간격 */
+  padding: 0.5rem 1rem;  /* 버튼 패딩 */
+  /* 기타 버튼 스타일 (색상, 테두리 등) */
+}
+
+
+/* 480px 이하 미디어 쿼리 */
+@media (max-width: 480px) {
+    #printCopyButton,
+    #resetButton {
+        display: inline-block !important; /* 버튼이 사라지지 않도록 강제 */
+         /* 좁은 화면에서 버튼 스타일 조정 (필요한 경우) */
+    }
+}
+</style>

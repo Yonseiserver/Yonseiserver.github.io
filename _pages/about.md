@@ -8,9 +8,7 @@ apply_text: 신규 계정 신청
 show_footer: false
 
 profile:
-  align: right
   image: yonsei.png
-  image_circular: true
   email: musagh08@yonsei.ac.kr
 
 description: |

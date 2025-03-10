@@ -1136,6 +1136,7 @@ nav[data-toggle="toc"] {
   table {
     display: block;
     overflow-x: auto;
+    max-width: 100%;
   }
 
   thead, tbody, th, td, tr {
@@ -1485,7 +1486,7 @@ figure.cover {
     background-color: #b0abb3;
   }
 
-    /* 다크 모드 스타일 */
+  
   /* 다크 모드 스타일 */
   @media (prefers-color-scheme: dark) {
     p,
