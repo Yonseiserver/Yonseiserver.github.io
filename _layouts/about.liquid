@@ -32,20 +32,47 @@ layout: default
       <!-- 이메일 -->
         <div style="text-align: center; margin-bottom: 1rem; z-index: 1;position: relative;">
             <p>
-              <a href="mailto:{{ page.profile.email | default: 'musagh08@yonsei.ac.kr' }}" style = "display:flex; align-items:center; justify-content: center;">
+              <a href="mailto:{{ page.profile.email | default: 'example@yonsei.ac.kr' }}" style = "display:flex; align-items:center; justify-content: center;">
                 <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
                 Contact
               </a>
             </p>
         </div>
-
-      <!-- 신규 계정 신청 버튼 -->
-      <div style="text-align: center; margin-top: 2rem;position: relative; z-index: 1;">
-        <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary inline-flex items-center">
-          <i class="fas fa-user-plus mr-2"></i>
-          {{ page.apply_text | default: '신규 계정 신청' }}
-        </a>
+     
+      <!-- 서버 사양  -->
+      <div style="margin-top: 3rem; position: relative; z-index: 1;">
+        <h2 style="text-align: center; margin-bottom: 1rem;">서버 사양</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
+          <thead style="border-bottom: 2px solid #dee2e6;">
+            <tr>
+              <th style="padding: 0.75rem; text-align: left;"></th> <!-- 아이콘 -->
+              <th style="padding: 0.75rem; text-align: left;">항목</th>
+              <th style="padding: 0.75rem; text-align: left;">사양</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for category_data in site.data.server %}
+              <tr>
+                <td style="padding: 0.75rem; width: 2rem;">
+                  {% case category_data.category %}
+                    {% when "CPU" %}
+                      <i class="fas fa-microchip" style="font-size: 1.5rem; color: #007bff;"></i>
+                    {% when "RAM" %}
+                      <i class="fas fa-memory" style="font-size: 1.5rem; color: #007bff;"></i>
+                    {% when "GPU" %}
+                      <i class="fas fa-server" style="font-size: 1.5rem; color: #007bff;"></i>
+                    {% when "Storage" %}
+                      <i class="fas fa-hdd" style="font-size: 1.5rem; color: #007bff;"></i>
+                  {% endcase %}
+                </td>
+                <td style="padding: 0.75rem;">{{ category_data.category }}</td>
+                <td style="padding: 0.75rem;">{{ category_data.value }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
+
 
       <!-- 최신 공지 -->
       <div style="margin-top: 3rem; position: relative; z-index: 1;">
@@ -70,6 +97,14 @@ layout: default
         </div>
       </div>
 
+    </div>
+
+    <!-- 신규 계정 신청 버튼 -->
+    <div style="text-align: center; margin-top: 2rem;position: relative; z-index: 1;">
+      <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary inline-flex items-center">
+        <i class="fas fa-user-plus mr-2"></i>
+        {{ page.apply_text | default: '신규 계정 신청' }}
+      </a>
     </div>
 
     {% if page.show_footer | default: true %}
