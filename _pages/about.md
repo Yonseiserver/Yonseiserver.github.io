@@ -8,23 +8,14 @@ apply_text: 신규 계정 신청
 show_footer: false
 
 profile:
-  align: center
+  align: right
   image: yonsei.jpg
   image_circular: true
   email: musagh08@yonsei.ac.kr
 
-features:
-  - title: "고성능 연산"
-    description: "빅데이터 분석과 ML을 위한 강력한 자원"
-    icon: "Server"
+description: |
+  연세대학교 통계데이터사이언스학과 학생을 위한 <br>
+  고성능 컴퓨팅 (High Performance Computing; HPC) 클러스터 서버입니다.
 
-  - title: "사용자 가이드"
-    description: "초보자를 위한 친절한 문서 제공"
-    icon: "BookOpen"
-
-  - title: "최신 공지"
-    description: "업데이트 및 유지보수 공지사항"
-    icon: "Megaphone"
-
-description: "연세대학교 통계데이터사이언스학과 학생을 위한 <br> 고성능 컴퓨팅 (High Performance Computing; HPC) 클러스터 서버입니다."
+latest_posts: 5
 ---

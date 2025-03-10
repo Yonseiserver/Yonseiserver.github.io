@@ -5,7 +5,7 @@ layout: default
 <div class="post">
   <header class="post-header">
     <div class="container mx-auto px-4 py-16 text-center">
-      <h1 class="post-title" style="font-size: 2.5rem; font-weight: bold; color:rgb(0, 0, 0);">
+      <h1 class="post-title" style="font-size: 2.5rem; font-weight: bold; color: #007bff;">
         {{ page.title | default: "Yonsei HPC Cluster" }}
       </h1>
       {% if page.subtitle %}
@@ -20,14 +20,14 @@ layout: default
       <!-- 배경 이미지 (로고) -->
       {% if page.profile.image %}
           {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          <div style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; z-index: -1; opacity: 0.2;">
+          <div style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; z-index: -1; opacity: 0.2;">
               <img src="{{ profile_image_path | relative_url }}" alt="Background Image" style="width: 100%; height: 100%; object-fit: contain; object-position: center;">
           </div>
       {% endif %}
 
       <!-- 설명 -->
       <div style="text-align: center; margin-bottom: 1rem; position: relative; z-index: 1;">
-        <p>{{ page.description | replace: '\n', '<br>' }}</p>  <!-- page.description 사용 -->
+        <p>{{ page.description }}</p>
       </div>
 
       <!-- 이메일 -->
@@ -48,28 +48,29 @@ layout: default
         </a>
       </div>
 
-      <!-- Features -->
-      {% if page.features %}
-        <div style="margin-top: 3rem; position: relative; z-index: 1; overflow-x: auto;">
-          {% for item in page.features %}
-            <div style="width: 100%; border: 1px solid #dee2e6; padding: 1.5rem; border-radius: 0.25rem; display: flex; align-items: flex-start; margin-bottom: 1rem;">
-              <div class="card-content" style="display: flex; ">
-                {% if item.icon == "Server" %}
-                  <i class="fas fa-server" style="color: #007bff; font-size: 2rem; margin-right: 1rem;"></i>
-                {% elsif item.icon == "BookOpen" %}
-                  <i class="fas fa-book-open" style="color: #007bff; font-size: 2rem; margin-right: 1rem;"></i>
-                {% elsif item.icon == "Megaphone" %}
-                  <i class="fas fa-bullhorn" style="color: #007bff; font-size: 2rem; margin-right: 1rem;"></i>
-                {% endif %}
-                <div>
-                  <h3 style="font-size: 1.5rem; font-weight: 600; margin-top: 0;">{{ item.title }}</h3>
-                  <p style="color: #6c757d; font-size: 0.45rem;">{{ item.description }}</p>
-                </div>
-              </div>
+      <!-- 최신 공지 -->
+      <div style="margin-top: 3rem; position: relative; z-index: 1;">
+        <div style="width: 100%; border: 1px solid #dee2e6; padding: 1.5rem; border-radius: 0.25rem; display: flex; align-items: flex-start;">
+          <div style="display: flex; flex-direction: column; width: 100%;">
+            <div style="display: flex;">
+              <i class="fas fa-bullhorn" style="color: #007bff; font-size: 2rem; margin-right: 1rem"></i>
+              <h3 style="font-size: 1.4rem; font-weight: 600; margin-top: 0.4rem;">최신 공지</h3>
             </div>
-          {% endfor %}
+            <ul style="list-style: none; padding-left: 0; margin-top: 1rem;">
+              {% assign sorted_news = site.news | sort: 'date' | reverse %}
+              {% for news_item in sorted_news limit: page.latest_posts %}  <!-- page.latest_posts 사용 -->
+                <li style="margin-bottom: 0.8rem;">
+                  <div class="post-list-item">
+                    <span class="post-meta">{{ news_item.date | date: "%Y-%m-%d" }}</span>
+                    <a href="{{ news_item.url | relative_url }}">{{ news_item.title }}</a>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
         </div>
-      {% endif %}
+      </div>
+
     </div>
 
     {% if page.show_footer | default: true %}
