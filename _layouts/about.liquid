@@ -5,18 +5,19 @@ layout: default
 <div class="post">
   <header class="post-header">
     <div class="container mx-auto px-4 py-16 text-center">
-      <h1 class="post-title" style="font-size: 2.5rem; font-weight: bold; color: #007bff;">
+      <h1 class="post-title">
         {{ page.title | default: "Yonsei HPC Cluster" }}
       </h1>
       {% if page.subtitle %}
-        <p style="font-size: 1.25rem; margin-top: 0.5rem; font-style: italic;">{{ page.subtitle }}</p>
+        <p class="desc subtitle-italic" style = "font-size: 14pt;">{{ page.subtitle }}</p>
       {% endif %}
     </div>
   </header>
 
   <article>
     <div class="container mx-auto px-4 relative">
-      
+
+      <!-- 배경 이미지 (로고) -->
       {% if page.profile.image %}
         {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
         <div style="position: absolute; top: 150px; left: 50%;  width: 300px; height: 300px; z-index: -1; opacity: 0.2;">
@@ -25,91 +26,92 @@ layout: default
       {% endif %}
 
       <!-- 설명 -->
-      <div style="text-align: center; margin-bottom: 1rem; position: relative; z-index: 1;">
-        <p>{{ page.description }}</p>
+      <div class="text-center margin-bottom-1rem position-relative z-index-1">
+              <p class="post-description" style = "font-size: 1.3rem !important;">{{ page.description }}</p>
       </div>
 
-      <!-- 이메일 -->
-        <div style="text-align: center; margin-bottom: 1rem; z-index: 1;position: relative;">
-            <p>
-              <a href="mailto:{{ page.profile.email | default: 'example@yonsei.ac.kr' }}" style = "display:flex; align-items:center; justify-content: center;">
-                <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
-                Contact
-              </a>
-            </p>
-        </div>
-     
-      <!-- 서버 사양  -->
-      <div style="margin-top: 3rem; position: relative; z-index: 1;">
-        <h2 style="text-align: center; margin-bottom: 1rem;">서버 사양</h2>
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem;">
-          <thead style="border-bottom: 2px solid #dee2e6;">
+      <!-- Contact & 신규 계정 신청 버튼 (Flexbox Container) -->
+      <div class = "buttons-container">
+          <!-- 이메일 -->
+          <div class="text-center margin-bottom-1rem position-relative z-index-1">
+              <p>
+                <a href="mailto:{{ page.profile.email | default: 'example@yonsei.ac.kr' }}" class = "btn btn-primary contact-button">
+                  <i class="fas fa-envelope mr-2"></i>
+                  Contact
+                </a>
+              </p>
+          </div>
+
+          <!-- 신규 계정 신청 버튼 -->
+          <div class="text-center margin-top-2rem position-relative z-index-1" style = "margin-top: 0 !important;">
+            <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary apply-button">
+              <i class="fas fa-user-plus mr-2"></i>
+              신규 계정 신청
+            </a>
+          </div>
+      </div>
+
+
+      <!-- 서버 사양 -->
+      <div class="margin-top-3rem position-relative z-index-1">
+        <h2 class = "specs-header">서버 사양</h2>
+        <table class="server-specs-table">
+          <thead class = "specs-thead">
             <tr>
-              <th style="padding: 0.75rem; text-align: left;"></th> <!-- 아이콘 -->
-              <th style="padding: 0.75rem; text-align: left;">항목</th>
-              <th style="padding: 0.75rem; text-align: left;">사양</th>
+              <th></th> <!-- 아이콘 -->
+              <th>항목</th>
+              <th>사양</th>
             </tr>
           </thead>
           <tbody>
-            {% for category_data in site.data.server %}
+            {% for category_data in site.data.server_specs %}
               <tr>
-                <td style="padding: 0.75rem; width: 2rem;">
+                <td class="specs-icon">
                   {% case category_data.category %}
                     {% when "CPU" %}
-                      <i class="fas fa-microchip" style="font-size: 1.5rem; color: #007bff;"></i>
+                      <i class="fas fa-microchip"></i>
                     {% when "RAM" %}
-                      <i class="fas fa-memory" style="font-size: 1.5rem; color: #007bff;"></i>
+                      <i class="fas fa-memory"></i>
                     {% when "GPU" %}
-                      <i class="fas fa-server" style="font-size: 1.5rem; color: #007bff;"></i>
+                      <i class="fas fa-server"></i>
                     {% when "Storage" %}
-                      <i class="fas fa-hdd" style="font-size: 1.5rem; color: #007bff;"></i>
+                      <i class="fas fa-hdd"></i>
                   {% endcase %}
                 </td>
-                <td style="padding: 0.75rem;">{{ category_data.category }}</td>
-                <td style="padding: 0.75rem;">{{ category_data.value }}</td>
+                <td class="specs-category">{{ category_data.category }}</td>
+                <td data-label="사양" class="specs-value">{{ category_data.value }}</td>
               </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
 
-
       <!-- 최신 공지 -->
-      <div style="margin-top: 3rem; position: relative; z-index: 1;">
-        <div style="width: 100%; border: 1px solid #dee2e6; padding: 1.5rem; border-radius: 0.25rem; display: flex; align-items: flex-start;">
-          <div style="display: flex; flex-direction: column; width: 100%;">
-            <div style="display: flex;">
-              <i class="fas fa-bullhorn" style="color: #007bff; font-size: 2rem; margin-right: 1rem"></i>
-              <h3 style="font-size: 1.4rem; font-weight: 600; margin-top: 0.4rem;">최신 공지</h3>
-            </div>
-            <ul style="list-style: none; padding-left: 0; margin-top: 1rem;">
-              {% assign sorted_news = site.news | sort: 'date' | reverse %}
-              {% for news_item in sorted_news limit: page.latest_posts %}  <!-- page.latest_posts 사용 -->
-                <li style="margin-bottom: 0.8rem;">
-                  <div class="post-list-item">
-                    <span class="post-meta">{{ news_item.date | date: "%Y-%m-%d" }}</span>
-                    <a href="{{ news_item.url | relative_url }}">{{ news_item.title }}</a>
-                  </div>
-                </li>
-              {% endfor %}
-            </ul>
+      <div class="margin-top-1rem position-relative z-index-1">
+        <div class="latest-news-block">
+          <div class="latest-news-header">
+            <i class="fas fa-bullhorn latest-news-icon"></i>
+            <h3 class="latest-news-title">최신 공지</h3>
           </div>
+          <ul class="latest-news-list">
+            {% assign sorted_news = site.news | sort: 'date' | reverse %}
+            {% for news_item in sorted_news limit: page.latest_posts %}
+              <li class="latest-news-item">
+                <div class="post-list-item">
+                  <span class="post-meta">{{ news_item.date | date: "%Y-%m-%d" }}</span>
+                  <a href="{{ news_item.url | relative_url }}">{{ news_item.title }}</a>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
         </div>
       </div>
 
     </div>
 
-    <!-- 신규 계정 신청 버튼 -->
-    <div style="text-align: center; margin-top: 2rem;position: relative; z-index: 1;">
-      <a href="{{ page.apply_link | default: 'https://forms.gle/M7bJVQfczEmqePpP6' }}" class="btn btn-primary inline-flex items-center">
-        <i class="fas fa-user-plus mr-2"></i>
-        {{ page.apply_text | default: '신규 계정 신청' }}
-      </a>
-    </div>
-
     {% if page.show_footer | default: true %}
-      <div style="max-width: 800px; margin: 0 auto; padding: 2rem;">
-        <footer style="background-color: #f8f9fa; text-align: center; padding: 1rem; margin-top: 3rem; color: #6c757d;">
+      <div class="max-width-800px margin-auto padding-2rem">
+        <footer class="bg-gray-200 text-center padding-1rem margin-top-3rem text-gray-600">
           © 2025 Yonsei University. All rights reserved.
         </footer>
       </div>

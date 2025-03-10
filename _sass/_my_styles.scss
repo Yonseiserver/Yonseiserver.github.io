@@ -1,0 +1,164 @@
+// Custom styles for about.liquid
+
+.subtitle-italic {
+    font-style: italic;
+  }
+  
+  .text-center {
+      text-align: center;
+  }
+  
+  .margin-bottom-1rem {
+      margin-bottom: 1rem;
+  }
+  
+  .margin-top-2rem {
+      margin-top: 2rem;
+  }
+  
+  .margin-top-3rem {
+      margin-top: 3rem;
+  }
+  
+  .margin-auto {
+      margin: 0 auto;
+  }
+  
+  .padding-1rem {
+      padding: 1rem;
+  }
+  
+  .padding-2rem {
+      padding: 2rem;
+  }
+  
+  
+  .position-relative {
+      position: relative;
+  }
+  
+  .z-index-1 {
+      z-index: 1;
+  }
+  
+  
+  .contact-button { /* 클래스 이름 변경: contact-link -> contact-button */
+      text-align: center;
+      display: inline-block;
+      background-color:#007bff;
+      color: white;
+      padding: 0.375rem 0.75rem;
+      border-radius: 0.375rem;
+      text-decoration: none;
+  }
+  
+  .apply-button {
+      background-color:#007bff;
+      color: white;
+      padding: 0.375rem 0.75rem;
+      text-align: center;
+      display: inline-block;
+      border-radius: 0.375rem;
+  }
+  
+  .buttons-container { /* buttons-container 클래스 추가 */
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+  }
+  
+  
+  .specs-header {
+      text-align: center;
+      margin-bottom: 1rem;
+  }
+  
+  .server-specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+      word-break: break-word; /* 긴 단어 줄바꿈 */
+      white-space: normal;   /* 셀 내용 줄바꿈 허용 */
+  
+      thead {
+          border-bottom: 2px solid #dee2e6;
+      }
+  
+      th {
+          padding: 0.75rem;
+          text-align: left;
+  
+          &:first-child{
+              /*아이콘*/
+              width: 2rem;
+          }
+      }
+  
+      td {
+          padding: 0.75rem;
+  
+          &:first-child{
+              /*아이콘*/
+              width: 2rem;
+          }
+      }
+  
+  
+      .specs-icon {
+          padding: 0.75rem;
+          width: 2rem;
+      }
+  
+      .specs-category {
+          padding: 0.75rem;
+          font-weight: bold;
+          color: #007bff;
+          colspan: 2;
+      }
+  
+      .specs-value {
+          padding: 0.75rem;
+      }
+  }
+  
+  
+  .latest-news-block {
+  
+      width: 100%;
+      border: 1px solid #dee2e6;
+      padding: 1.5rem;
+      border-radius: 0.25rem;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+  
+      .latest-news-header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 1rem;
+      }
+  
+      .latest-news-icon {
+          color: #007bff;
+          font-size: 2rem;
+          margin-right: 1rem;
+      }
+  
+      .latest-news-title {
+          font-size: 1.4rem;
+          font-weight: 600;
+          margin-top: 0.4rem;
+      }
+  
+      .latest-news-list {
+          list-style: none;
+          padding-left: 0;
+          margin-top: 0;
+      }
+  
+      .latest-news-item {
+          margin-bottom: 0.6rem;
+      }
+  
+  }

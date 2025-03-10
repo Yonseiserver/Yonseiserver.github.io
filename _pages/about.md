@@ -1,6 +1,6 @@
 ---
 layout: about
-title: Yonsei HPC Cluster
+title: Yonseistat HPC Cluster
 subtitle: 고성능 컴퓨팅 클러스터, 연구를 위한 강력한 지원
 permalink: /
 apply_link: https://forms.gle/M7bJVQfczEmqePpP6
@@ -9,7 +9,7 @@ show_footer: false
 
 profile:
   align: right
-  image: yonsei.jpg
+  image: yonsei.png
   image_circular: true
   email: musagh08@yonsei.ac.kr
 

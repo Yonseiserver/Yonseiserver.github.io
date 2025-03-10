@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /blog/
-title: Docs
+title: Manual
 nav: true
 nav_order: 2
 pagination:
