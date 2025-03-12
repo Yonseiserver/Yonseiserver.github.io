@@ -1,7 +1,7 @@
 ---
 layout: post
 title: R and python
-date: 2025-03-12 13:00:00
+date: 2025-03-02 13:00:00
 description: this is what included image galleries could look like
 tags: formatting images
 categories: sample-posts
@@ -9,6 +9,7 @@ categories: sample-posts
 
 # R 실행하기
 2번 문서의 Step 1, 2, 3을 먼저 숙지하시기 바랍니다. 이 문서는 그 이후의 내용만을 다룹니다.
+
 ## Step1. 필요한 R 패키지를 자신의 디렉토리에 설치하기
 `R`은 `conda environment`를 사용하지 않으며, `R` 패키지들은 `install.packages`를 통해 설치할 때 별도의 옵션을 주지 않으면 ~~user별 directory가 아닌 NAS 내의 공통 폴더에 저장됩니다.~~
 
@@ -56,10 +57,14 @@ INSTALL_opts = c('--no-lock')
 )
 ```
 위 코드를 `User home directory`에 `install_R_packages.R`로 저장합니다. 이제 이 설치 코드를 실행하는 slurm job script를 Step4를를 참고해 생성한 다음 `sbatch`로 실행합니다.
+
+
 ## Step2. R 코드 작성
 클러스터에서 실행할 `R` 코드를 local에서 작성합니다. 코드가 문제 없이 실행되는지 먼저 local에서 확인합니다. 그 후 실제로 실행할 코드를 작성하여 클러스터의 `User home directory`에 옮기거나, `Visual Studio Code`내에서 작성하여 저장합니다.
 
-아래의 샘플 코드는 `xgboost`와 `caret`을 개인 디렉토리에 설치 및 로드하고 learning과 prediction을 수행한 다음 prediction 결과 plot을 jpeg로 저장하는 코드입니다. `library(xgboost, lib.loc = lib_r_packages)` 에서 `lib.loc` 옵션이 개인 디렉토리에 설치된 패키지를 로드하는 옵션입니다. Batch script를 작성할 때는 알고리즘의 output이 자동으로 저장되지 않으므로 파일로 결과를 저장하는 코드를 포함하는 것이 좋습니다. 아래 코드를 `R_test_hpc.R`로 저장하여 `User home directory`에 둡니다.
+아래의 샘플 코드는 `xgboost`와 `caret`을 개인 디렉토리에 설치 및 로드하고 learning과 prediction을 수행한 다음 prediction 결과 plot을 jpeg
+
+로 저장하는 코드입니다. `library(xgboost, lib.loc = lib_r_packages)` 에서 `lib.loc` 옵션이 개인 디렉토리에 설치된 패키지를 로드하는 옵션입니다. Batch script를 작성할 때는 알고리즘의 output이 자동으로 저장되지 않으므로 파일로 결과를 저장하는 코드를 포함하는 것이 좋습니다. 아래 코드를 `R_test_hpc.R`로 저장하여 `User home directory`에 둡니다.
 ``` 
 lib_r_packages = "/data/home/testuser/R_packages"
 
@@ -118,6 +123,7 @@ legend(x = 1, y = 38,  legend = c("original test_y", "predicted test_y"),
        col = c("red", "blue"), box.lty = 1, cex = 0.8, lty = c(1, 1))
 dev.off()
 ```
+
 ## Step3. 현재 클러스터 자원 사용량 확인
 아래 커맨드를 통해 해당 노드의 cpu와 RAM 사용 현황을 볼 수 있습니다.
 ```
@@ -133,9 +139,11 @@ hpc 215880 257613 up 64 0/64/0/64
     - RAM 용량을 FREE_MEM보다 적게 설정해야 합니다.
     - ~~CPU 코어 개수를 CPUS idle보다 적게 설정해야 합니다.~~
 - 현재 가용 자원보다 더 많은 자원을 요구하는 script를 작성하면, job이 바로 실행되지 않습니다. 대기 상태에 있다가 다른 user들의 job이 끝나고 자원이 반환되면 job이 실행됩니다.
+
 ## Step4. Slurm batch script 작성
 작성한 코드를 해당 node에서 실행하는 Slurm batch script를 작성합니다. 클러스터 소개 페이지의 slurm job configurator를 사용하면 script를 쉽게 작성할 수 있습니다.
-![이미지20](../img/img20.jpg)
+![이미지20](/assets/img/img20.jpg)
+
 - `Python`과 달리 conda environment를 사용하지 않으므로, `conda activate`에 체크하지 않습니다.
 - 빈칸들을 채웁니다.
 - Script란에 `Rscript xxx.R`라고 작성합니다. 이는 `home directory`에 있는 `xxx.R` 파일을 `R`로 실행하라는 의미입니다. Job script를 작성하거나 `sbatch` 명령어를 사용할 때, `visual studio code`의 explorer에서 파일명을 마우스 우클릭하고 경로 복사를 사용하면 편리합니다.
@@ -172,6 +180,7 @@ Script 윗부분의 #SBATCH 옵션들의 의미는 다음과 같습니다.
 - `--nodelist`: 사용할 node의 이름
 - `--output`: 코드 실행 결과 log 파일. 확장자는 out이나 log가 가능합니다.
 - `--error`: 코드 실행 결과 log error 파일과 log 파일의 파일명과 저장 경로는 원하는 데로 수정할 수 있습니다. sbatch에 대한 더 자세한 정보는 [Slurm 공식 웹페이지](https://slurm.schedmd.com/sbatch.html)를 참조하세요.
+
 ## Step5. Slurm batch script 실행
 `sbatch` 커맨드를 통해 job을 제출합니다. 2번 문서의 Step 4에서처럼, `ctrl+shift+~`를 눌러 터미널을 여러 개 띄우고 `smap -i`로 작업 현황을 확인하고, `tail -f xxx.out`, `tail -f xxx.err`으로 콘솔 출력이나 error를 확인합니다. 작업은 5분 이내에 끝납니다.
 ```
