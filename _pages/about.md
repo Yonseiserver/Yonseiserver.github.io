@@ -9,7 +9,8 @@ show_footer: false
 
 profile:
   image: yonsei.png
-  email: musagh08@yonsei.ac.kr
+  first_email: musagh08@yonsei.ac.kr
+  second_email: hjksandy613@gmail.com
 
 description: |
   연세대학교 통계데이터사이언스학과 학생을 위한 <br>

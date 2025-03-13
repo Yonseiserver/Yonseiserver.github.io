@@ -27,7 +27,7 @@ layout: default
             <!-- 이메일 -->
             <div class="text-center margin-bottom-1rem">
                 <p>
-                  <a href="mailto:{{ page.profile.email | default: 'example@yonsei.ac.kr' }}" class = "btn btn-primary contact-button">
+                  <a href="mailto:{{ page.profile.first_email }}?cc={{ page.profile.second_email }}" class = "btn btn-primary contact-button">
                     <i class="fas fa-envelope mr-2"></i>
                     Contact
                   </a>
