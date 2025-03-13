@@ -34,7 +34,7 @@ ninja.data = [{
       
         title: "Introduction",
       
-      description: "",
+      description: "this is what included image galleries could look like",
       section: "Posts",
       handler: () => {
         
