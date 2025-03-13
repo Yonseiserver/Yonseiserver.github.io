@@ -6,7 +6,7 @@
  tags: SSH Python
 ---
 
-R 사용자는 Step1-3을 숙지한 뒤 [R 문서](/posts/2025-03-02-r.md)로 넘어가세요.
+R 사용자는 Step1-3을 숙지한 뒤 [R 문서](/blog/2025/r/index.html)로 넘어가세요.
 
 ## Step1 - terminal 앱 고르기
 
