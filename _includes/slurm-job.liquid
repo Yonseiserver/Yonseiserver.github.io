@@ -2,12 +2,9 @@
     <article class="post-content">
         <form name="config" id="config">
             <p style="font-size:24px;"><br> Select Job Options </p>
-            <label>
+            <label style="font-size:18px;">
                 <input type="checkbox" name="jobselect" value="conda"> Conda activate
-            </label>
-            <label>
-                <input type="checkbox" name="jobselect" value="gpu"> Using GPU
-            </label>
+            </label>            
             <br><br>
             <!-- 버튼들을 table 밖으로 이동하고 div로 감쌈 -->
             <div>
@@ -64,18 +61,15 @@
                 var form = document.forms['config'];
                 var jobselect = form.jobselect;
                 var check_job;
-                if (jobselect[0].checked === true && jobselect[1].checked === false) {
-                    check_job = jobselect[0].value;
-                } else if (jobselect[0].checked === false && jobselect[1].checked === true) {
-                    check_job = jobselect[1].value;
-                } else if (jobselect[0].checked === true && jobselect[1].checked === true) {
-                    check_job = "both";
+                if (jobselect.checked === true) {
+                    check_job = jobselect.value;
                 } else {
                     check_job = "none";
                 }
 
                 var conda_script = "# Set up conda environment\n" +
-                    "CONDA_BIN_PATH=/conda/anaconda3/bin\n" +
+                    "CONDA_ROOT=/conda/anaconda3\n" +
+                    "CONDA_BIN_PATH=$CONDA_ROOT/bin\n" +                    
                     "ENV_NAME=" + form.envname.value + "\n" +
                     "ENV_PATH=/data/home/$(whoami)/.conda/envs/$ENV_NAME\n" +
                     "source $CONDA_BIN_PATH/activate $ENV_PATH";
@@ -103,19 +97,10 @@
                         "#SBATCH --nodelist=hpc\n" +
                         "\n" +
                         conda_script + "\n" +
-                        "\n" + script_content;
-                } else if (check_job === "gpu") {
-                    printme = job_script +
-                        gpu_script + "\n" +
-                        "\n" + script_content;
-                } else if (check_job === "both") {
-                    printme = job_script +
-                        gpu_script + "\n" +
-                        "\n" + conda_script + "\n" +
-                        "\n" + script_content;
+                        "\n" + script_content;                
                 } else if (check_job === "none") {
                     printme = job_script +
-                        "#SBATCH --nodelist=cpu-compute\n" +
+                        "#SBATCH --nodelist=hpc\n" +
                         "\n" + script_content;
                 }
 
@@ -141,18 +126,18 @@
 
                 var printme = "#!/bin/bash\n" +
                     "#\n" +
-                    "#SBATCH --job-name=\n" +
+                    "#SBATCH --job-name=None\n" +
                     "#SBATCH --partition=jobs\n" +
-                    "#SBATCH --account=\n" +
-                    "#SBATCH --mem=\n" +
+                    "#SBATCH --account=$(whoami)\n" +
+                    "#SBATCH --mem=1G\n" +
                     "#SBATCH --ntasks=1\n" +
                     "#SBATCH --cpus-per-task=\n" +
-                    "#SBATCH --time=\n" +
-                    "#SBATCH --output=/data/home//.log\n" +
-                    "#SBATCH --error=/data/home//.err\n" +
-                    "#SBATCH --nodelist=cpu-compute\n" +
+                    "#SBATCH --time=00:00:00\n" +
+                    "#SBATCH --output=/data/home/$(whoami)/.log\n" +
+                    "#SBATCH --error=/data/home/$(whoami)/.err\n" +
+                    "#SBATCH --nodelist=hpc\n" +
                     "\n" +
-                    "python /mnt/nas/users/$(whoami)/main.py";
+                    "python /data/home/$(whoami)/main.py";
 
                 var resultElem = document.getElementById("result");
                 if (resultElem) {
