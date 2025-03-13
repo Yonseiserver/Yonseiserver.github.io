@@ -5,8 +5,6 @@
  description: HPC Cluster와 Slurm job scheduler에 대한 설명 문서
  tags: HPC Slurm
 ---
- 
-# Introduction
 
 ## 1. HPC node
 
