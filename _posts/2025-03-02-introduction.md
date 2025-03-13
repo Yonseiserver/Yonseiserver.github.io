@@ -28,7 +28,7 @@ HPC(High performance computing) 시스템은 개인용 컴퓨터와 달리 여�
 
 Job scheduler를 식당의 웨이터에 비유할 수 있습니다. 식당에 사람이 많으면 줄을 서서 기다려야 합니다. 웨이터는 각 손님 그룹의 수에 맞는 자리가 나면 그 그룹을 테이블로 안내합니다.
 
-![이미지0](/assets/img/img0.jpg)
+![이미지0](../assets/img/img0.jpg)
 
 **용어**
 
