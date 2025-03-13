@@ -30,7 +30,18 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/slurm-job/";
           },
-        },{id: "post-a-post-with-image-galleries",
+        },{id: "post-introduction",
+      
+        title: "Introduction",
+      
+      description: "",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/introduction/";
+        
+      },
+    },{id: "post-a-post-with-image-galleries",
       
         title: "a post with image galleries",
       
