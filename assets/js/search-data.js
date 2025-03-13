@@ -30,33 +30,33 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/slurm-job/";
           },
-        },{id: "post-introduction",
+        },{id: "post-tensorflow-실행하기",
       
-        title: "Introduction",
+        title: "Tensorflow 실행하기",
       
-      description: "this is what included image galleries could look like",
+      description: "HPC에서 Tensorflow 실행 방법",
       section: "Posts",
       handler: () => {
         
           window.location.href = "/blog/2025/tf/";
         
       },
-    },{id: "post-introduction",
+    },{id: "post-ssh-접속-및-python-실행하기",
       
-        title: "Introduction",
+        title: "SSH 접속 및 Python 실행하기",
       
-      description: "this is what included image galleries could look like",
+      description: "SSH 접속 방법 및 HPC에서 Python 실행 방법",
       section: "Posts",
       handler: () => {
         
           window.location.href = "/blog/2025/ssh-python/";
         
       },
-    },{id: "post-introduction",
+    },{id: "post-r-실행하기",
       
-        title: "Introduction",
+        title: "R 실행하기",
       
-      description: "this is what included image galleries could look like",
+      description: "HPC에서 R 실행 방법",
       section: "Posts",
       handler: () => {
         
@@ -67,7 +67,7 @@ ninja.data = [{
       
         title: "Introduction",
       
-      description: "this is what included image galleries could look like",
+      description: "HPC Cluster와 Slurm job scheduler에 대한 설명 문서",
       section: "Posts",
       handler: () => {
         
