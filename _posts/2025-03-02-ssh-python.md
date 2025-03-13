@@ -6,9 +6,7 @@
  tags: SSH Python
 ---
 
-# SSH 접속 및 Python 실행하기
-
-R 사용자는 Step1-3을 숙지한 뒤 [R 문서](./2025-03-02-r.md)로 넘어가세요.
+R 사용자는 Step1-3을 숙지한 뒤 [R 문서](/posts/2025-03-02-r.md)로 넘어가세요.
 
 ## Step1 - terminal 앱 고르기
 
@@ -30,19 +28,19 @@ User는 `SSH`로 `hpc node`에 접속하여 클러스터를 사용합니다. 터
 
 Microsoft가 제공하는 `Remote Development` extension pack을 설치합니다. WSL, Dev Containers, Remote-SSH, Remote-Tunnels가 자동적으로 같이 설치됩니다.
 
-![이미지1](../assets/img/img1.jpg)
+![이미지1](/assets/img/img1.jpg)
 
-![이미지2](../assets/img/img2.jpg)
+![이미지2](/assets/img/img2.jpg)
 
 ### 2. Remote Explorer에서 REMOTES(TUNNELS/SSH)를 선택 후, + 클릭
 
-![이미지3](../assets/img/img3.jpg)
+![이미지3](/assets/img/img3.jpg)
 
 ### 3. SSH 접속 커맨드 입력
 
 아래와 같은 창이 뜨면 `SSH` 커맨드를 입력하여 `hpc node`에 접속합니다.
 
-![이미지4](../assets/img/img4.jpg)
+![이미지4](/assets/img/img4.jpg)
 
 아래 커맨드에 Slack으로 안내받은 port, username, `hpc node`의 ip을 넣어서 위 창에 입력하고 `Enter`키를 누르면 됩니다. `SSH`의 default port는 `22`이지만, 저희는 보안상 이유로 다른 port를 사용합니다.
 
@@ -54,11 +52,11 @@ ssh -p [port] [username]@[ip]
 
 **Select SSH configuration file to update**가 나오면 맨 위 항목을 선택합니다.
 
-![이미지5](../assets/img/img5.jpg)
+![이미지5](/assets/img/img5.jpg)
 
 **Host added!** 라는 메시지가 우측 하단에 나옵니다.
 
-![이미지6](../assets/img/img6.jpg)
+![이미지6](/assets/img/img6.jpg)
 
 ### 5. Host명 수정(선택사항)
 
@@ -66,57 +64,57 @@ ssh -p [port] [username]@[ip]
 
 Remote Explorer에서 SSH 옆 톱니바퀴를 클릭합니다.
 
-![이미지7](../assets/img/img7.jpg)
+![이미지7](/assets/img/img7.jpg)
 
 Select SSH configuration file to update가 나오면 맨 위 항목을 선택합니다.
 
-![이미지8](../assets/img/img8.jpg)
+![이미지8](/assets/img/img8.jpg)
 
 다음과 같이 config 파일이 열립니다. (아래는 ip주소와 포트번호 노출을 막기 위해 Host, HostName, Port 옆을 수정한 이미지입니다. config 파일 여시면 ip주소와 포트번호 모두 안내받으신 대로 보이는 것이 정상입니다.)
 
-![이미지9](../assets/img/img9.jpg)
+![이미지9](/assets/img/img9.jpg)
 
 Host 옆 내용을 사용자 임의로 수정한 후 해당 config 파일을 저장합니다. 여기에서는 yonsihpc로 수정해 주었습니다. Host 옆 이외의 부분은 수정하지 않습니다.
 
-![이미지10](../assets/img/img10.jpg)
+![이미지10](/assets/img/img10.jpg)
 
 다음과 같이 Host명이 수정된 것을 Remote Explorer에서 확인할 수 있습니다.
 
-![이미지11](../assets/img/img11.jpg)
+![이미지11](/assets/img/img11.jpg)
 
 ### 6. Remote Explorer에서 Connect to Host in New Window 선택
 
-![이미지12](../assets/img/img12.jpg)
+![이미지12](/assets/img/img12.jpg)
 
 ### 7. 서버 Platform 선택
 
 **Linux**를 선택합니다.
 
-![이미지13](../assets/img/img13.jpg)
+![이미지13](/assets/img/img13.jpg)
 
 ### 8. Password 입력
 
 안내받은 password를 입력하여 로그인합니다.
 
-![이미지14](../assets/img/img14.jpg)
+![이미지14](/assets/img/img14.jpg)
 
 ### 9. 파일 시스템 마운트
 
 좌측 탭의 파일 모양 아이콘을 클릭하고 **Open Folder** 버튼을 클릭합니다.
 
-![이미지15](../assets/img/img15.jpg)
+![이미지15](/assets/img/img15.jpg)
 
 기본적으로 user home directory 경로가 입력되어 있습니다. OK를 누릅니다.
 
-![이미지16](../assets/img/img16.jpg)
+![이미지16](/assets/img/img16.jpg)
 
 다시 password 입력창이 뜬다면, 안내받은 password를 입력합니다.
 
-![이미지17](../assets/img/img14.jpg)
+![이미지17](/assets/img/img14.jpg)
 
 ### 10. 둘러보기
 
-![이미지18](../assets/img/img18.jpg)
+![이미지18](/assets/img/img18.jpg)
 
 - 좌측 file explorer에서 파일을 관리합니다. Windows 탐색기나 MacOS Finder에서 drag&drop으로 파일을 옮길 수 있습니다. 클러스터 내부의 파일을 user의 local 컴퓨터로 가져오는 것도 drag&drop으로 가능합니다.
 
@@ -399,7 +397,7 @@ hpc 216217 257613 up 64 0/64/0/64
 
 앞선 단계에서 만든 해당 `conda environment`를 activate하고 코드를 실행하는 Slurm batch script를 작성합니다. 클러스터 소개 페이지의 slurm job configurator를 사용하면 script를 쉽게 작성할 수 있습니다.
 
-![이미지19](../assets/img/img19.jpg)
+![이미지19](/assets/img/img19.jpg)
 
 - `Conda activate`에 체크합니다.
 
