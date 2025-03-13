@@ -2,8 +2,8 @@
  layout: post
  title: Introduction
  date: 2025-03-02 12:00:00
- description: this is what included image galleries could look like
- tags: formatting images
+ description: HPC Cluster와 Slurm job scheduler에 대한 설명 문서
+ tags: HPC Slurm
 ---
  
 # Introduction

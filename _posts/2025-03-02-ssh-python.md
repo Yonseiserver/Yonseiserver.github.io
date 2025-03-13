@@ -1,9 +1,9 @@
 ---
  layout: post
- title: Introduction
+ title: SSH 접속 및 Python 실행하기
  date: 2025-03-02 12:00:00
- description: this is what included image galleries could look like
- tags: formatting images
+ description: SSH 접속 방법 및 HPC에서 Python 실행 방법
+ tags: SSH Python
 ---
 
 # SSH 접속 및 Python 실행하기
