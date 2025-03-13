@@ -1,3 +1,11 @@
+---
+ layout: post
+ title: Introduction
+ date: 2025-03-02 12:00:00
+ description: this is what included image galleries could look like
+ tags: formatting images
+---
+ 
 # Introduction
 
 ## 1. HPC node
