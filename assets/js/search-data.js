@@ -38,6 +38,39 @@ ninja.data = [{
       section: "Posts",
       handler: () => {
         
+          window.location.href = "/blog/2025/tf/";
+        
+      },
+    },{id: "post-introduction",
+      
+        title: "Introduction",
+      
+      description: "this is what included image galleries could look like",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/ssh-python/";
+        
+      },
+    },{id: "post-introduction",
+      
+        title: "Introduction",
+      
+      description: "this is what included image galleries could look like",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/r/";
+        
+      },
+    },{id: "post-introduction",
+      
+        title: "Introduction",
+      
+      description: "this is what included image galleries could look like",
+      section: "Posts",
+      handler: () => {
+        
           window.location.href = "/blog/2025/introduction/";
         
       },
