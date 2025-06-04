@@ -435,7 +435,6 @@ Slurm batch script의 내용은 아래와 같습니다.
 #
 #SBATCH --job-name=python_test_hpc
 #SBATCH --partition=jobs
-#SBATCH --account=testuser
 #SBATCH --mem=4gb
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
