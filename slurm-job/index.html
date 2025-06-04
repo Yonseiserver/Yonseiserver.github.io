@@ -24,7 +24,6 @@
                     "#\n" +
                     "#SBATCH --job-name=" + form.job_name.value + "\n" +
                     "#SBATCH --partition=jobs\n" +
-                    "#SBATCH --account=" + form.id.value + "\n" +
                     "#SBATCH --mem=" + form.mem.value + "\n" +
                     "#SBATCH --ntasks=1\n" +
                     "#SBATCH --cpus-per-task=" + form.ntask.value + "\n" +
@@ -74,7 +73,6 @@
                     "#\n" +
                     "#SBATCH --job-name=None\n" +
                     "#SBATCH --partition=jobs\n" +
-                    "#SBATCH --account=$(whoami)\n" +
                     "#SBATCH --mem=1G\n" +
                     "#SBATCH --ntasks=1\n" +
                     "#SBATCH --cpus-per-task=\n" +
