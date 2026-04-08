@@ -1,42 +1,55 @@
 <div class="post">
     <article class="post-content">
         <form name="config" id="config">
-            <p style="font-size:24px;"><br> Select Job Options </p>
-            <label style="font-size:18px;">
-                <input type="checkbox" name="jobselect" value="conda"> Conda activate
-            </label>            
+            <p style="font-size:24px;"><br> Select Job Options </p>            
             <br><br>
             <!-- 버튼들을 table 밖으로 이동하고 div로 감쌈 -->
             <div>
                 <table>
                     <tr>
+                        <td>USERNAME: </td>
+                        <td><input type="text" name="username" size="12" placeholder="예: lsj3232"></td>
+                    </tr>
+                    <tr>
                         <td>JOBNAME: </td>
                         <td><input type="text" name="job_name" size="12" placeholder="작업 이름"></td>
                     </tr>
                     <tr>
+                        <td>NODE: </td>
+                        <td>
+                        <select name="nodelist">
+                            <option value="hpc">hpc</option>
+                            <option value="hpc-stat1">hpc-stat1</option>
+                            <option value="brl0">brl0</option>
+                            <option value="brl1">brl1</option>
+                            <option value="brl2">brl2</option>
+                            <option value="brl3">brl3</option>
+                            <option value="brl4">brl4</option>
+                            <option value="brl5">brl5</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>CPU: </td>
-                        <td><input type="text" name="ntask" size="12" placeholder="사용햘 cpu 수"></td>
+                        <td><input type="text" name="cpus" size="12" placeholder="예: 4"></td>
                     </tr>
                     <tr>
                         <td>MEMORY: </td>
-                        <td><input type="text" name="mem" size="12" placeholder="사용할 메모리"></td>
+                        <td><input type="text" name="mem" size="12" placeholder="예: 4G"></td>
                     </tr>
                     <tr>
                         <td>TIME: </td>
-                        <td><input type="text" name="job_time" size="12" placeholder="실행시간"></td>
-                    </tr>
-                    <tr>
-                        <td>ENVNAME: </td>
-                        <td><input type="text" name="envname" size="12" placeholder="가상환경 이름"></td>
+                        <td><input type="text" name="job_time" size="12" placeholder="예: 01:00:00"></td>
                     </tr>
                     <tr>
                         <td>Script: </td>
                         <td>
-                            <textarea name="script" rows="5" cols="40"
-                                placeholder="python /data/home/$(whoami)/main.py"></textarea>
+                        <textarea name="script" rows="5" cols="40"
+                            placeholder="예: python ~/main.py&#10;또는&#10;echo Hello Slurm&#10;sleep 30"></textarea>
                         </td>
                     </tr>
                 </table>
+
                 <!-- 버튼들을 감싸는 div 추가 -->
                 <div class="button-container">
                     <input id="printCopyButton" type="button" value="Print & Copy">
@@ -51,53 +64,48 @@
 
         {% raw %}
         <script>
+            function getPartition(node) {
+                if (node === "hpc") return "jobs";
+                if (node === "hpc-stat1") return "partition1";
+                if (node.startsWith("brl")) return "brl";
+                return "";
+            }
+
+            function getHomePrefix(node) {
+                if (node === "hpc") return "/data/home";
+                if (node === "hpc-stat1" || node.startsWith("brl")) return "/home";
+                return "/home";
+            }
+
             function printinfo() {
                 console.log("printinfo function called!");
 
                 var form = document.forms['config'];
-                var jobselect = form.jobselect;
-                var check_job;
-                if (jobselect.checked === true) {
-                    check_job = jobselect.value;
-                } else {
-                    check_job = "none";
-                }
+                var node = form.nodelist.value;
+                var partition = getPartition(node);
+                var homePrefix = getHomePrefix(node);
+                var username = form.username.value || "$(whoami)";
 
-                var conda_script = "# Set up conda environment\n" +
-                    "CONDA_ROOT=/conda/anaconda3\n" +
-                    "CONDA_BIN_PATH=$CONDA_ROOT/bin\n" +                    
-                    "ENV_NAME=" + form.envname.value + "\n" +
-                    "ENV_PATH=/data/home/$(whoami)/.conda/envs/$ENV_NAME\n" +
-                    "source $CONDA_BIN_PATH/activate $ENV_PATH";
 
                 var job_script = "#!/bin/bash\n" +
                     "#\n" +
                     "#SBATCH --job-name=" + form.job_name.value + "\n" +
-                    "#SBATCH --partition=jobs\n" +
+                    "#SBATCH --partition=" + partition + "\n" +
                     "#SBATCH --mem=" + form.mem.value + "\n" +
                     "#SBATCH --ntasks=1\n" +
-                    "#SBATCH --cpus-per-task=" + form.ntask.value + "\n" +
+                    "#SBATCH --cpus-per-task=" + form.cpus.value + "\n" +
                     "#SBATCH --time=" + form.job_time.value + "\n" +
-                    "#SBATCH --output=/data/home/" + form.id.value + "/" + form.job_name.value + ".log\n" +
-                    "#SBATCH --error=/data/home/" + form.id.value + "/" + form.job_name.value + ".err\n";
+                    "#SBATCH --output=" + homePrefix + "/" + username + "/" + form.job_name.value + ".log\n" +
+                    "#SBATCH --error=" + homePrefix + "/" + username + "/" + form.job_name.value + ".err\n" +
+                    "#SBATCH --nodelist=" + node + "\n";
 
-                var gpu_script = "#SBATCH --gres=gpu:1\n" +
-                    "#SBATCH --nodelist=hpc";
-
+                // var gpu_script = "#SBATCH --gres=gpu:1\n" +
+                //     "#SBATCH --nodelist=hpc";
+                
                 var script_content = form.script.value;
 
-                var printme;
-                if (check_job === "conda") {
-                    printme = job_script +
-                        "#SBATCH --nodelist=hpc\n" +
-                        "\n" +
-                        conda_script + "\n" +
-                        "\n" + script_content;                
-                } else if (check_job === "none") {
-                    printme = job_script +
-                        "#SBATCH --nodelist=hpc\n" +
-                        "\n" + script_content;
-                }
+                var printme = job_script +
+                    "\n" + script_content;
 
                 var resultElem = document.getElementById("result");
                 if (resultElem) {
@@ -118,20 +126,31 @@
 
             function resetinfo() {
                 document.forms['config'].reset();
+                document.forms['config'].username.value = "$(whoami)";
+                document.forms['config'].job_name.value = "test_job";
+                document.forms['config'].nodelist.value = "hpc";
+                document.forms['config'].cpus.value = "1";
+                document.forms['config'].mem.value = "1G";
+                document.forms['config'].job_time.value = "00:01:00";
+                document.forms['config'].script.value = 'echo "Hello Slurm"\nhostname\npwd\nsleep 30\necho "Job finished"';
 
                 var printme = "#!/bin/bash\n" +
                     "#\n" +
-                    "#SBATCH --job-name=None\n" +
+                    "#SBATCH --job-name=test_job\n" +
                     "#SBATCH --partition=jobs\n" +
                     "#SBATCH --mem=1G\n" +
                     "#SBATCH --ntasks=1\n" +
-                    "#SBATCH --cpus-per-task=\n" +
-                    "#SBATCH --time=00:00:00\n" +
-                    "#SBATCH --output=/data/home/$(whoami)/.log\n" +
-                    "#SBATCH --error=/data/home/$(whoami)/.err\n" +
+                    "#SBATCH --cpus-per-task=1\n" +
+                    "#SBATCH --time=00:01:00\n" +
+                    "#SBATCH --output=/data/home/$(whoami)/test_job.log\n" +
+                    "#SBATCH --error=/data/home/$(whoami)/test_job.err\n" +
                     "#SBATCH --nodelist=hpc\n" +
                     "\n" +
-                    "python /data/home/$(whoami)/main.py";
+                    'echo "Hello Slurm"\n' +
+                    "hostname\n" +
+                    "pwd\n" +
+                    "sleep 30\n" +
+                    'echo "Job finished"';
 
                 var resultElem = document.getElementById("result");
                 if (resultElem) {
