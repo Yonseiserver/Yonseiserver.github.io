@@ -1,58 +1,112 @@
 ---
- layout: post
- title: Introduction
- date: 2025-03-02 12:00:00
- description: HPC Cluster와 Slurm job scheduler에 대한 설명 문서
- tags: HPC Slurm
+layout: post
+title: Introduction
+date: 2025-03-02 12:00:00
+last_updated: 2026-03-27 12:00:00
+description: 연세대학교 통계데이터사이언스학과 HPC 클러스터와 Slurm 사용 안내
+tags: HPC Slurm
 ---
 
-## 1. HPC node
+## 1. 학과 서버 소개
 
-- Name: hpc
+연세대학교 통계데이터사이언스학과 서버는 여러 대의 서버를 하나의 클러스터처럼 묶어서 사용하는 HPC(High Performance Computing) 환경입니다.  
+사용자는 각 서버를 개별적으로 관리할 필요 없이, 하나의 시스템 안에서 Python, R, TensorFlow 등의 작업을 수행할 수 있습니다.
 
-- CPU: INTEL® XEON® GOLD 6526Y CPU @ 2.20GHz 32 cores, 64 threads
+현재 학과 서버는 다음과 같이 구성되어 있습니다.
 
-- RAM: SAMSUNG M321R8GA0BB0-CQKZJ (64GB) x 4
+- **관리 노드**
+  - `hpcmaster`
 
-- GPU: NVIDIA GeForce RTX 4090 x 1
+- **계산 노드**
+  - `hpc`
+  - `hpc-stat1`
+  - `brl0`
+  - `brl1`
+  - `brl2`
+  - `brl3`
+  - `brl4`
+  - `brl5`
 
-- Storage: 2TB NVMe SSD, 8TB HDD
+`hpcmaster`는 클러스터 전반의 작업 관리와 공통 서비스 운영을 담당하는 중심 노드입니다.  
+예를 들어 Slurm 스케줄러의 관리 기능은 이 노드를 중심으로 이루어집니다.
 
-## 2. Slurm job scheduler
+반면 `hpc`, `hpc-stat1`, `brl0`~`brl5`는 사용자의 계산 작업이 실행되는 계산 노드입니다.  
+각 노드는 CPU와 GPU 자원을 가지고 있으며, 실제 분석 및 학습 작업은 주로 이 노드들에서 수행됩니다.
 
-### Job scheduler
+사용자는 작업 환경이나 설정에 따라 여러 노드에 접속할 수 있습니다.  
+그러나 실제 계산은 셸에서 직접 장시간 실행하지 않고, 원칙적으로 Slurm을 통해 제출하는 방식으로 운영합니다.
 
-HPC(High performance computing) 시스템은 개인용 컴퓨터와 달리 여러 user가 `hpc node`를 공유하며 사용합니다. 따라서 누구의 작업이 언제 어느 node에서 실행될지 결정해 주어야 합니다. 이러한 역할을 수행하는 것이 job scheduler입니다.
+## 2. 왜 Slurm을 사용하나요?
 
-Job scheduler를 식당의 웨이터에 비유할 수 있습니다. 식당에 사람이 많으면 줄을 서서 기다려야 합니다. 웨이터는 각 손님 그룹의 수에 맞는 자리가 나면 그 그룹을 테이블로 안내합니다.
+학과 서버는 개인용 컴퓨터와 달리 여러 사용자가 함께 사용하는 공용 계산 환경입니다.  
+누군가는 짧은 코드 테스트를 하고, 누군가는 오래 걸리는 학습 작업을 수행하며, 누군가는 GPU를 필요로 할 수 있습니다.
+
+이때 모든 사용자가 각자 서버에서 직접 Python이나 R을 실행하면,
+
+- 특정 사용자가 자원을 과도하게 점유할 수 있고,
+- 다른 사용자의 작업이 지연되거나 실행되지 않을 수 있으며,
+- 전체 서버 운영이 불안정해질 수 있습니다.
+
+이러한 문제를 줄이기 위해 학과 서버는 **Slurm job scheduler**를 사용합니다.
+
+어떤 작업을 언제, 어느 계산 노드에서 실행할지 정해 주는 역할을 하는 것이 바로 job scheduler입니다.
+
+Job scheduler는 식당의 웨이터에 비유할 수 있습니다.  
+식당에 손님이 많으면 모든 손님이 바로 자리에 앉을 수 없고, 웨이터가 빈 자리를 확인하여 순서대로 안내해야 합니다.  
+마찬가지로 서버에서도 동시에 많은 작업이 제출되면, 어떤 작업이 먼저 실행될지, 어느 노드에 배정될지를 정해 주는 시스템이 필요합니다.  
+Slurm은 각 작업이 필요로 하는 CPU, GPU, 메모리 등의 자원을 고려하여 실행 가능한 노드에 작업을 배정합니다.
 
 <img src="/assets/img/img0.jpg" width="900" height="600"/>
 <!-- ![이미지0](/assets/img/img0.jpg) -->
 
-**용어**
+따라서 학과 서버에서는 Python, R, TensorFlow 등 계산 작업을 **원칙적으로 Slurm을 통해 실행**합니다.
 
-- Job: user가 클러스터에서 실행하고자 하는 코드(bash, python, R 등을 모두 포함)
+## 3. Job이란 무엇인가요?
 
-- Batch job submission: user가 미리 작성한 코드(output을 파일로 저장하는 내용 포함)를 scheduler에게 제출하여 non-interactive하게 서버에서 실행하는 것
+Slurm에서는 사용자가 서버에서 실행하려는 작업을 **job**이라고 부릅니다.
 
-### Slurm
+예를 들어 다음과 같은 것들이 모두 job이 될 수 있습니다.
 
-Slurm(Simple Linux Utility for Resource Management)은 HPC에서 많이 채용하는 job scheduler입니다. 전 세계 TOP 500 슈퍼컴퓨터 중 60%가 slurm을 사용합니다.
+- Python 스크립트 실행
+- R 코드 실행
+- 딥러닝 학습
+- 데이터 전처리
+- 결과 파일 저장
 
-Slurm은 각 user의 cpu사용량 등 다양한 통계를 기반으로 작업의 우선순위를 결정할 수 있습니다. 예를 들어, University of Toronto의 Computer Science Department의 HPC는 사용 CPU 코어 수 * 사용 시간(초) 값이 낮은 user의 job을 먼저 실행합니다. RAM 사용량은 0.25GB당 CPU 1코어 사용으로, GPU 사용량은 GPU 1개당 CPU 16코어 사용으로 환산합니다.
+보통 사용자는 실행할 내용을 스크립트 파일로 작성한 뒤, 이를 Slurm에 제출하여 실행합니다.  
+이 방식을 **batch job submission**이라고 합니다.
 
-현재 Yonseistat HPC는 위와 같은 점수제가 아닌 FIFO(First In, First Out) 규칙을 사용하고 있습니다. 일정 기간 운영해본 뒤 상황에 맞추어 규칙을 변경할 예정입니다.
+즉, 서버에서 작업을 실행하는 일반적인 흐름은 다음과 같습니다.
 
-## 3. Conda environment
+1. 로컬 또는 서버에서 코드 작성
+2. 필요한 환경 준비
+3. Slurm 제출 스크립트 작성
+4. job 제출
+5. output 및 log 확인
 
-### Virtual environment
+## 4. Python/R 실행 환경
 
-Virtual environment를 사용하면 한 컴퓨터 내에서 각 user가 독립적으로 Python 패키지를 관리할 수 있습니다. 또한, 여러 컴퓨터에서 동일한 환경을 구축하여 패키지 버전 차이로 인한 문제 발생을 방지할 수 있습니다. 이는 특히 GPU driver, CUDA, cuDNN, 딥러닝 라이브러리의 버전 간 호환성이 중요한 딥러닝 job에서 유용합니다.
+학과 서버에서는 패키지 충돌을 방지하고 환경을 안정적으로 관리하기 위해, 사용자별 독립 실행 환경(가상환경)을 사용합니다.  
+특히 Python의 경우, **Miniconda 기반 가상환경**을 사용하여 필요한 패키지와 버전을 각자 관리합니다.
 
-여러 user가 node를 공유하는 HPC에서 virtual environment의 사용은 필수적입니다. 각 user는 자신의 로컬 컴퓨터와 동일한 Python 환경을 node 내에 구축합니다. 그리고 로컬 컴퓨터에서 코드를 작성하고 이상 없이 실행되는지 테스트합니다. 문제 없이 실행되는 것이 확인된 코드를 slurm을 통해 클러스터에서 실행합니다. Virtual environment는 로컬에서 작성한 코드가 클러스터에서 문제 없이 작동하는 것을 보장합니다.
+구체적인 설치 및 사용 방법은 아래 문서를 참고해 주세요.
 
-### Conda environment
+- **SSH 접속 및 job 실행하기**
+- **Python 실행하기**
+- **R 실행하기**
+- **TensorFlow 실행하기**
+- **이용 규칙**
 
-Yonseistat HPC는 `conda`를 이용해 virtual environment를 구현합니다. `conda`는 Windows, MacOS, Linux를 모두 지원합니다.
+## 5. 서버 사양 요약
 
-Yonseistat HPC에서 Python job을 실행하기 위해서는 반드시 conda environment를 사용해야 합니다.
+| Node | Role | CPU | RAM | GPU | Root Storage |
+|------|------|-----|-----|-----|--------------|
+| hpcmaster | management | Intel Xeon E-2414 (4 threads) | 62 GiB | 없음 | 1.8T |
+| hpc | compute | Intel Xeon Gold 6526Y (64 threads) | 251 GiB | RTX 4090 × 2 | 1.8T |
+| hpc-stat1 | compute | AMD EPYC 9354 (128 threads) | 503 GiB | RTX 6000 Ada × 5 | 3.5T |
+| brl0 | compute | Intel Xeon Gold 6226R (64 threads) | 251 GiB | RTX A5000 × 8 | 916G |
+| brl1 | compute | Intel Xeon Gold 6226R (64 threads) | 251 GiB | RTX A5000 × 8 | 916G |
+| brl2 | compute | Intel Xeon Gold 6226R (64 threads) | 251 GiB | RTX A5000 × 8 | 1.8T |
+| brl3 | compute | Intel Xeon Gold 6426Y (64 threads) | 251 GiB | RTX A5000 × 8 | 1.8T |
+| brl4 | compute | Intel Xeon Gold 6526Y (64 threads) | 251 GiB | RTX A5000 × 8 | 1.8T |
+| brl5 | compute | AMD EPYC 9254 (96 threads) | 251 GiB | RTX 4090 × 8 | 1.8T |
