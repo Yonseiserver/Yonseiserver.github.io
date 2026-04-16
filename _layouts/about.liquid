@@ -46,32 +46,27 @@ layout: default
 
         <!-- 서버 사양 -->
         <div class="margin-top-3rem">
-          <h2 class = "specs-header">서버 사양</h2>
+          <h2 class="specs-header">서버 사양</h2>
           <table class="server-specs-table">
-            <thead class = "specs-thead">
+            <thead class="specs-thead">
               <tr>
-                <th></th> <!-- 아이콘 -->
-                <th>항목</th>
-                <th>사양</th>
+                <th>Node</th>
+                <th>Role</th>
+                <th>CPU</th>
+                <th>RAM</th>
+                <th>GPU</th>
+                <th>Root Storage</th>
               </tr>
             </thead>
             <tbody>
-              {% for category_data in site.data.server_specs %}
+              {% for server in site.data.server_specs %}
                 <tr>
-                  <td class="specs-icon">
-                    {% case category_data.category %}
-                      {% when "CPU" %}
-                        <i class="fas fa-microchip"></i>
-                      {% when "RAM" %}
-                        <i class="fas fa-memory"></i>
-                      {% when "GPU" %}
-                        <i class="fas fa-server"></i>
-                      {% when "Storage" %}
-                        <i class="fas fa-hdd"></i>
-                    {% endcase %}
-                  </td>
-                  <td class="specs-category">{{ category_data.category }}</td>
-                  <td data-label="사양" class="specs-value">{{ category_data.value }}</td>
+                  <td data-label="Node">{{ server.node }}</td>
+                  <td data-label="Role">{{ server.role }}</td>
+                  <td data-label="CPU">{{ server.cpu }}</td>
+                  <td data-label="RAM">{{ server.ram }}</td>
+                  <td data-label="GPU">{{ server.gpu }}</td>
+                  <td data-label="Root Storage">{{ server.storage }}</td>
                 </tr>
               {% endfor %}
             </tbody>

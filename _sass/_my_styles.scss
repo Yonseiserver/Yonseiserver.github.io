@@ -76,53 +76,44 @@
 }
 
 .server-specs-table {
+    width: 100%;
     max-width: 100%;
     border-collapse: collapse;
     margin-bottom: 2rem;
-    word-break: break-word; /* 긴 단어 줄바꿈 */
-    white-space: normal;   /* 셀 내용 줄바꿈 허용 */
+    white-space: normal;
+    word-break: keep-all;
+    table-layout: auto;
 
     thead {
         border-bottom: 2px solid #dee2e6;
     }
 
-    th {
-        padding: 0.75rem;
-        text-align: left;
-
-        &:first-child{
-            /*아이콘*/
-            width: 2rem;
-        }
-    }
-
+    th,
     td {
         padding: 0.75rem;
-
-        &:first-child{
-            /*아이콘*/
-            width: 2rem;
-        }
+        text-align: left;
+        vertical-align: top;
     }
 
-
-    .specs-icon {
-        padding: 0.75rem;
-        width: 2rem;
+    th:first-child,
+    td:first-child {
+        width: 7rem;
+        white-space: nowrap;
     }
 
-    .specs-category {
-        padding: 0.75rem;
-        font-weight: bold;
-        color: #007bff;
-        colspan: 2;
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 7rem;
+        white-space: nowrap;
     }
 
-    .specs-value {
-        padding: 0.75rem;
+    th:nth-child(4),
+    td:nth-child(4),
+    th:nth-child(6),
+    td:nth-child(6) {
+        white-space: nowrap;
     }
 }
-
 
 .latest-news-block {
 
