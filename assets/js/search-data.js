@@ -30,44 +30,55 @@ ninja.data = [{
           handler: () => {
             window.location.href = "/slurm-job/";
           },
-        },{id: "post-tensorflow-실행하기",
+        },{id: "post-이용-규칙-및-저장공간-안내",
       
-        title: "Tensorflow 실행하기",
+        title: "이용 규칙 및 저장공간 안내",
       
-      description: "HPC에서 Tensorflow 실행 방법",
+      description: "저장공간 사용 원칙, 작업 우선순위, 문의 방법 안내",
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/tf/";
+          window.location.href = "/blog/2026/server-usage/";
         
       },
     },{id: "post-r-실행하기",
       
         title: "R 실행하기",
       
-      description: "HPC에서 R 실행 방법",
+      description: "학과 서버에서 R을 실행하는 방법",
       section: "Posts",
       handler: () => {
         
           window.location.href = "/blog/2025/r/";
         
       },
-    },{id: "post-ssh-접속-및-python-실행하기",
+    },{id: "post-python-실행하기",
       
-        title: "SSH 접속 및 Python 실행하기",
+        title: "Python 실행하기",
       
-      description: "SSH 접속 방법 및 HPC에서 Python 실행 방법",
+      description: "Miniconda를 이용한 Python environment 생성 및 Slurm job 실행 방법",
       section: "Posts",
       handler: () => {
         
-          window.location.href = "/blog/2025/ssh-python/";
+          window.location.href = "/blog/2025/python/";
+        
+      },
+    },{id: "post-ssh-접속-및-job-실행하기",
+      
+        title: "SSH 접속 및 Job 실행하기",
+      
+      description: "SSH 접속 방법 및 Slurm을 이용한 기본 job 실행 방법",
+      section: "Posts",
+      handler: () => {
+        
+          window.location.href = "/blog/2025/ssh/";
         
       },
     },{id: "post-introduction",
       
         title: "Introduction",
       
-      description: "HPC Cluster와 Slurm job scheduler에 대한 설명 문서",
+      description: "연세대학교 통계데이터사이언스학과 HPC 클러스터와 Slurm 사용 안내",
       section: "Posts",
       handler: () => {
         
