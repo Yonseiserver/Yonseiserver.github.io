@@ -2,8 +2,8 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Yonseistat HPC Cluster # the website title (if blank, full name will be used instead)
-first_name: Yonseistat
+title: Yonsei Commerce & Economics HPC Cluster # the website title (if blank, full name will be used instead)
+first_name: Yonsei Commerce & Economics
 middle_name:
 last_name: 
 email: musagh08@yonsei.ac.kr
@@ -91,7 +91,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 # -----------------------------------------------------------------------------
 
 blog_name: Manual # blog_name will be displayed in your blog page
-blog_description: 연세대학교 통계데이터사이언스학과 HPC cluster
+blog_description: 연세대학교 상경대학 HPC cluster
 permalink: /blog/:year/:title/
 lsi: false # produce an index for related posts
 

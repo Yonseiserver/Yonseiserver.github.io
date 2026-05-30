@@ -1,6 +1,6 @@
 ---
 layout: about
-title: Yonseistat HPC Cluster
+title: Yonsei Commerce & Economics HPC Cluster
 subtitle: 고성능 컴퓨팅 클러스터, 연구를 위한 강력한 지원
 permalink: /
 apply_link: https://forms.gle/M7bJVQfczEmqePpP6
@@ -13,7 +13,7 @@ profile:
   second_email: lsj3232@yonsei.ac.kr
 
 description: |
-  연세대학교 통계데이터사이언스학과 학생을 위한 <br>
+  연세대학교 상경대학 구성원을 위한 <br>
   고성능 컴퓨팅 (High Performance Computing; HPC) 클러스터 서버입니다.
 
 latest_posts: 5
