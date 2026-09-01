@@ -3,8 +3,8 @@ const ninja = document.querySelector('ninja-keys');
 
 // add the home and posts menu items
 ninja.data = [{
-    id: "nav-yonseistat-hpc-cluster",
-    title: "Yonseistat HPC Cluster",
+    id: "nav-yonsei-commerce-economics-hpc-cluster",
+    title: "Yonsei Commerce & Economics HPC Cluster",
     section: "Navigation",
     handler: () => {
       window.location.href = "/";
@@ -45,7 +45,7 @@ ninja.data = [{
       
         title: "R 실행하기",
       
-      description: "학과 서버에서 R을 실행하는 방법",
+      description: "상경대학 서버에서 R을 실행하는 방법",
       section: "Posts",
       handler: () => {
         
@@ -78,7 +78,7 @@ ninja.data = [{
       
         title: "Introduction",
       
-      description: "연세대학교 통계데이터사이언스학과 HPC 클러스터와 Slurm 사용 안내",
+      description: "연세대학교 상경대학 HPC 클러스터와 Slurm 사용 안내",
       section: "Posts",
       handler: () => {
         
