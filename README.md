@@ -1,4 +1,4 @@
-# Yonseistat-server
+# Yonsei Commerce & Economics HPC server
 
 ## Description
 - Add description here
